@@ -15,7 +15,10 @@ include information on at least 25 different partners (real or fictional), with 
 
 ## Authors
 
-- [will be edited later](https://www.github.com/octokatherine)
+- [@AlanSanchez317](https://www.github.com/AlanSanchez317)
+- [@DanielFreeman068](https://www.github.com/DanielFreeman068)
+- [@oakuopus](https://www.github.com/oakuopus)
+
 
 
 ## Presentation
