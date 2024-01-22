@@ -28,5 +28,37 @@
 
     <button onclick="window.location.href='/view-data'">View Submitted Data</button>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/user-info')
+                .then(response => response.json())
+                .then(user => {
+                    if (user && user.username) {
+                        document.getElementById('user-info').textContent = `Welcome, ${user.username}`;
+                        document.getElementById('logout-btn').style.display = 'block';
+                        document.getElementById('login-btn').style.display = 'none';
+                        document.getElementById('register-btn').style.display = 'none';
+                    } else {
+                        document.getElementById('login-btn').style.display = 'block';
+                        document.getElementById('register-btn').style.display = 'block';
+                        document.getElementById('logout-btn').style.display = 'none';
+                    }
+                });
+        });
+    
+        function logout() {
+            fetch('/logout')
+                .then(() => {
+                    window.location.href = '/';
+                });
+        }
+    </script>
+    
+    <div id="user-info"></div>
+    <button id="logout-btn" onclick="logout()" style="display:none;">Logout</button>
+    <button id="login-btn" onclick="window.location.href='/login'" style="display:none;">Login</button>
+    <button id="register-btn" onclick="window.location.href='/register'" style="display:none;">Register</button>
+    
+
 </body>
 </html>
