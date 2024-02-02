@@ -1,0 +1,200 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Arial', sans-serif;
+    background-color: #000;
+}
+
+/* Navigation styles */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    color: white;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 50;
+}
+
+.logo {
+    height: 60px; /* Logo size increased */
+}
+
+.nav-links, .nav-buttons {
+    display: flex;
+    list-style-type: none;
+}
+
+.nav-links li a, .nav-buttons button {
+    margin: 0 10px;
+    text-decoration: none;
+    color: white;
+}
+
+.nav-buttons button {
+    padding: 0.5rem 1.5rem;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.nav-buttons button:hover {
+    background-color: white;
+    color: black;
+}
+
+/* Header styles */
+header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4rem 2rem;
+    min-height: 100vh;
+}
+
+.background-gif-wrapper {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    z-index: 0;
+}
+
+.background-gif {
+    position: absolute;
+    top: 0;
+    left: -50%;
+    height: 100%;
+    min-width: 200%;
+    min-height: 100%;
+}
+
+.center-gif-wrapper {
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 10%; /* Center GIF size reduced */
+}
+
+.centered-gif {
+    height: auto;
+    width: 100%;
+}
+
+/* Content styles */
+.header-content {
+    position: relative;
+    max-width: 600px;
+    z-index: 20;
+    margin-left: 10%; /* Text moved to the left */
+}
+
+.main-headline {
+    font-size: 4rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.sub-headline {
+    color: #bbb;
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.email-form {
+    display: flex;
+    margin-bottom: 2rem;
+}
+
+.email-input {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 9999px 0 0 9999px;
+}
+
+.signup-button {
+    padding: 1rem 1.5rem;
+    background-color: #6c5ce7;
+    border: none;
+    color: white;
+    border-radius: 0 9999px 9999px 0;
+    cursor: pointer;
+}
+
+.trusted-text {
+    font-size: 0.875rem;
+    color: #bbb;
+    margin-bottom: 1rem;
+}
+
+.logos {
+    display: flex;
+    justify-content: start;
+}
+
+.company-logo {
+    height: 50px;
+    margin-right: 1rem;
+}
+
+/* Animated line */
+.animated-line {
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, #4FD1C5, #F687B3, #F6AD55);
+    z-index: 5;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .nav-links, .nav-buttons {
+        flex-direction: column;
+    }
+
+    .nav-buttons {
+        margin-top: 1rem;
+    }
+
+    .header-content, .background-gif-wrapper, .center-gif-wrapper {
+        text-align: center;
+    }
+
+    .main-headline {
+        font-size: 2rem;
+    }
+
+    .email-input, .signup-button {
+        width: 100%;
+        border-radius: 9999px;
+    }
+
+    .email-input {
+        margin-bottom: 1rem;
+    }
+
+    .email-form {
+        flex-direction: column;
+    }
+}
