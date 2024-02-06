@@ -10,7 +10,7 @@
 </head>
 <body class="bg-black font-sans leading-normal tracking-normal">
 
-<!-- Navigation -->
+<!-- Navbar -->
 <nav class="flex items-center justify-between flex-wrap p-6 bg-purple-900 bg-opacity-30">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
         <a href="#Home">
@@ -29,16 +29,13 @@
     </div>
 </nav>
 
-<!-- Header with video background and color overlay -->
+<!-- First Header -->
 <header class="relative flex items-center justify-center min-h-screen">
   <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover" disablePictureInPicture>
     <source src="./Media/TopWebsiteBg.mp4" type="video/mp4">
   </video>
   <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-black to-transparent"></div>
-  
-  <!-- Background GIF positioned on the right -->
-  <img src="./Media/topcentergif.gif" alt="Floating Graphics" class="absolute z-50 w-1/4 top-10 right-1/2 transform translate-x-1/2">
-
+    <img src="./Media/topcentergif.gif" alt="Floating Graphics" class="absolute z-50 w-1/4 top-10 right-1/2 transform translate-x-1/2">
   <div class="z-10 w-full text-center">
     <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight text-white mt-10">Let's build from here</h1>
     <p class="text-lg lg:text-xl xl:text-2xl mt-6 leading-normal text-gray-400">The world’s leading AI-powered developer platform.</p>
@@ -55,8 +52,27 @@
       <img src="./Media/NatureMadeLogo.png" alt="Nature Made Logo" class="company-logo">
     </div>
   </div>
-  
 </header>
+
+<!-- Productivity Section -->
+<div id="productivity" class="productivity-section">
+  <div class="container mx-auto px-4 py-8">
+    <div class="info-card">
+      <div class="highlight-effect"></div> <!-- Highlight effect overlay -->
+      <div class="content-layer"> <!-- New layer for content to keep it above the highlight -->
+          <div class="info-content">
+              <h2>GitHub Actions</h2>
+              <p>Automate, customize, and execute your software development workflows right in your repository with GitHub Actions. <a href="https://github.com/features/actions">Learn more about GitHub Actions</a>.</p>
+          </div>
+          <div class="info-image">
+              <!-- Your image here -->
+          </div>
+      </div>
+     </div>
+    </div>
+  </div>
+
+
 
 <script src="./hometest.js"></script>
 

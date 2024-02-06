@@ -149,6 +149,62 @@ header {
     z-index: 5;
 }
 
+.productivity-section .info-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 100px; /* Increased padding for a taller appearance */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background-color: #3b3b3b; /* Light shade of gray for background */
+    color: #ddd; /* Lighter shade of gray for text */
+    position: relative; /* Ensures stacking context */
+
+}
+
+.productivity-section .info-card .highlight-effect {
+    position: absolute;
+    background-color: rgba(0, 255, 0, 0.4); /* More opaque and resembling a spray effect */
+    width: 150px; /* Increased size for the highlight effect */
+    height: 150px;
+    border-radius: 50%;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none; /* Prevent mouse events on the highlight */
+    mix-blend-mode: multiply; /* Optional: creates a more blended effect with the background */
+    z-index: 1; /* Lower than content but above the base layer */
+
+}
+
+.productivity-section .info-card .content-layer {
+    position: relative; /* Establishes new stacking context above highlight effect */
+    z-index: 2; /* Ensures content layer is above highlight effect */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; /* Matches parent's width */
+    height: 100%; /* Matches parent's height */
+}
+
+.info-content h2 {
+    color: #fff; /* White for "GitHub Actions" text */
+    font-weight: bold;
+}
+
+.info-content p, .info-content a {
+    color: #bbb; /* Lighter shade of gray for the rest of the text */
+}
+
+.info-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+
 @media (max-width: 768px) {
     .nav-links, .nav-buttons {
         flex-direction: column;
@@ -177,5 +233,13 @@ header {
 
     .email-form {
         flex-direction: column;
+    }
+
+    .productivity-section .info-card {
+        flex-direction: column;
+    }
+
+    .info-content, .info-image {
+        flex-basis: 100%;
     }
 }
