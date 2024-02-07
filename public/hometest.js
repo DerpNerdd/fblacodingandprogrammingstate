@@ -11,12 +11,19 @@ document.addEventListener('scroll', function() {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const deltaX = (x - centerX) / 50; // More subtle tilt
-    const deltaY = (y - centerY) / 50; // More subtle tilt
+
+    // Calculate deltas for tilt with a dead zone near edges
+    const edgeDeadZone = 20; // Pixels from the edge which are less sensitive
+    let deltaX = (x - centerX) / 50;
+    let deltaY = (y - centerY) / 50;
+
+    // Apply a dead zone
+    if (Math.abs(x - centerX) < edgeDeadZone) deltaX = 0;
+    if (Math.abs(y - centerY) < edgeDeadZone) deltaY = 0;
 
     this.style.transform = `rotateX(${deltaY * -1}deg) rotateY(${deltaX}deg)`;
 
-    // Correctly target the highlight effect element
+    // Highlight effect adjustments
     const highlight = this.querySelector('.highlight-effect');
     highlight.style.opacity = 1;
     highlight.style.left = `${x}px`;
@@ -26,8 +33,8 @@ document.addEventListener('scroll', function() {
 
 document.querySelector('.info-card').addEventListener('mouseleave', function(e) {
     this.style.transform = 'rotateX(0) rotateY(0)';
-    // Hide the highlight effect correctly
     const highlight = this.querySelector('.highlight-effect');
     highlight.style.opacity = 0;
     highlight.style.transform = 'translate(-50%, -50%) scale(0)';
 });
+  

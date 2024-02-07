@@ -16,45 +16,38 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 2rem; /* Reduced padding to move content up */
-    position: absolute;
+    padding: 0.5rem 2rem; /* Reduced padding for a shorter navbar */
+    position: relative; /* Ensure navbar is not sticky and scrolls with the page */
     width: 100%;
-    top: 0;
+    background: rgba(128, 0, 128, 0.5); /* Adjust opacity as needed */
     z-index: 50;
-    background: rgba(128, 0, 128, 0.3); /* Purple background with adjusted opacity */
 }
 
 .logo {
-    height: 80px;
-    filter: drop-shadow(0px 0px 8px white); /* White glow for the logo */
-    margin-bottom: -0.25rem; /* Adjust to raise the logo up */
-}
-
-.nav-links, .nav-buttons {
-    display: flex;
-    list-style-type: none;
-    margin-top: -0.5rem; /* Adjust to raise the nav items up */
+    height: 50px; /* Adjust the logo size as needed for a shorter navbar */
+    filter: drop-shadow(0px 0px 8px white);
 }
 
 .nav-links li a, .nav-buttons button {
     margin: 0 15px;
     text-decoration: none;
     color: white;
-    font-size: 1.125rem; /* Larger font size */
+    font-size: 16px; /* Adjust font size for readability within the shorter navbar */
+    padding: 8px 0;
 }
 
 .nav-buttons button {
-    padding: 0.75rem 2rem; /* Larger button padding */
+    padding: 8px 16px; /* Adjust padding for a proportionate look in the shorter navbar */
     background-color: transparent;
     border: 1px solid white;
     border-radius: 0.375rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .nav-buttons button:hover {
     background-color: white;
-    color: black;
+    color: #6200ea; /* Adjust hover color to fit your design */
 }
 
 header {
@@ -64,6 +57,19 @@ header {
     align-items: center;
     padding-top: 4rem; /* Add padding to top to lift content */
     min-height: 100vh;
+    overflow: hidden; /* Ensure no overflow from pseudo-element */
+}
+
+/* Gradient overlay to smooth transition from video to body */
+header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20%; /* Adjust the height based on your needs */
+    background: linear-gradient(to top, #000, transparent);
+    z-index: 20; /* Ensure it's above the video but below the text */
 }
 
 .centered-gif {
@@ -73,6 +79,15 @@ header {
     right: 50%; /* Center the gif */
     transform: translateX(50%); /* Center the gif correctly */
     z-index: 50; /* Above all text */
+}
+
+.gif-container {
+    z-index: 30;
+}
+
+/* Ensure text and other content are above the gradient */
+.z-10 {
+    z-index: 30;
 }
 
 .header-content {
@@ -128,6 +143,28 @@ header {
     align-items: center; /* Align logos vertically */
     filter: grayscale(100%); /* Make logos gray */
 }
+.gif-container {
+    position: absolute;
+    top: 10%; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    width: 200px; /* Match the GIF size */
+    height: 200px; /* Match the GIF size to maintain circle shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Makes the container circular */
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent green background */
+    box-shadow: 0 0 8px 8px rgba(218, 218, 218, 0.6); /* Green glow effect */
+}
+
+.top-center-gif {
+    width: 100%; /* Ensure the GIF fits within the container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 50%; /* Optional: Makes the GIF itself circular if desired */
+}
+
 
 .company-logo {
     height: 3rem; /* Standard height for logos */
@@ -152,59 +189,77 @@ header {
 .productivity-section .info-card {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 100px; /* Increased padding for a taller appearance */
+    justify-content: start;
+    padding: 30px; /* Reduced padding to make the card shorter */
     border: 1px solid #ddd;
     border-radius: 8px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
-    background-color: #3b3b3b; /* Light shade of gray for background */
+    background-color: #252525; /* Dark background for the card */
     color: #ddd; /* Lighter shade of gray for text */
-    position: relative; /* Ensures stacking context */
-
+    width: 100%; /* Full width of the card */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    height: 450px; /* Reduced height to make the card shorter */
 }
 
 .productivity-section .info-card .highlight-effect {
     position: absolute;
-    background-color: rgba(0, 255, 0, 0.4); /* More opaque and resembling a spray effect */
-    width: 150px; /* Increased size for the highlight effect */
-    height: 150px;
+    background: radial-gradient(circle, rgba(0, 255, 0, 0) 0%, rgba(0, 255, 0, 0.2) 70%, rgba(0, 255, 0, 0) 100%);
+    width: 300px; /* Fixed width for the circle */
+    height: 300px; /* Fixed height to maintain circular shape */
     border-radius: 50%;
     opacity: 0; /* Initially hidden */
     transition: opacity 0.3s ease, transform 0.3s ease;
     pointer-events: none; /* Prevent mouse events on the highlight */
-    mix-blend-mode: multiply; /* Optional: creates a more blended effect with the background */
-    z-index: 1; /* Lower than content but above the base layer */
-
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); /* Centered and scaled down initially */
+    mix-blend-mode: normal; /* Reset blend mode to normal */
 }
+
 
 .productivity-section .info-card .content-layer {
-    position: relative; /* Establishes new stacking context above highlight effect */
-    z-index: 2; /* Ensures content layer is above highlight effect */
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 100%; /* Matches parent's width */
-    height: 100%; /* Matches parent's height */
+    justify-content: start;
+    width: 100%;
+    height: 100%; /* Ensure the content layer fills the card */
 }
 
-.info-content h2 {
-    color: #fff; /* White for "GitHub Actions" text */
-    font-weight: bold;
+
+.info-content {
+    max-width: 50%; /* Allocates half of the card for text */
+    text-align: left;
 }
 
-.info-content p, .info-content a {
-    color: #bbb; /* Lighter shade of gray for the rest of the text */
+.info-content p{
+    color: #bbb; /* Lighter shade of gray for text */
+    font-size: 18px; /* Adjusted for readability */
+}
+
+.info-content a{
+    color: #FFF;
+    font-size: 22px;
+}
+
+.info-content span {
+    color: #fff; /* White for emphasis */
+    font-weight: bold; /* Bold for emphasis */
+    font-size: 24px; /* Larger font size for titles or key phrases */
 }
 
 .info-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
+    max-height: 100%; /* Ensures image does not exceed the card's height */
+    max-width: 100%; /* Ensures image fits within its container */
+    object-fit: contain; /* Avoids distorting the image's aspect ratio */
 }
 
-
+.info-image img {
+    max-height: 100%; /* Ensure the image does not exceed the card's height */
+    max-width: 100%; /* Ensure the image does not exceed its container width */
+    object-fit: contain; /* Fit the image within its bounds without distorting its aspect ratio */
+}
 @media (max-width: 768px) {
     .nav-links, .nav-buttons {
         flex-direction: column;
@@ -237,9 +292,14 @@ header {
 
     .productivity-section .info-card {
         flex-direction: column;
+        padding: 20px;
     }
 
     .info-content, .info-image {
-        flex-basis: 100%;
+        max-width: 100%;
+    }
+
+    .info-content {
+        margin-bottom: 20px;
     }
 }
