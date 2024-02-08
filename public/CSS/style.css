@@ -437,6 +437,154 @@ header::after {
     font-size: x-large;
 }
 
+.specific-div .custom-content {
+    flex-direction: row-reverse; /* Flips the order */
+  }
+  
+  .specific-div .text-container {
+    padding-right: 20px; /* Adjust padding for text on the left */
+    padding-left: 0; /* Remove left padding */
+  }
+
+  .unique-background-overlay {
+    position: relative;
+    width: 100%;
+    height: 500px; /* Adjust the height to be shorter */
+    background: url('../Media/Graphic_6.png') center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .unique-background-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, transparent, black 70%);
+    z-index: 0;
+  }
+  
+  .unique-background-overlay p {
+    position: relative;
+    z-index: 1;
+    color: rgb(163, 163, 163); /* Make text gray */
+    font-size: 18px; /* Match size with other divs */
+    padding: 0 20px; /* Ensure text padding for smaller screens */
+  }
+  
+
+  .global-footer {
+    background-color: rgba(24, 24, 24, 0.638);
+    color: #fff;
+    padding: 60px 80px 20px; /* Reduced bottom padding to decrease excess space underneath */
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 250px;
+}
+
+.footer-logo a img {
+    max-width: 80%;
+    height: auto;
+}
+
+.footer-logo {
+    flex-basis: 25%;
+    padding-right: 20px;
+}
+
+.footer-logo p, .footer-logo .subscribe-button {
+    margin-top: 10px;
+}
+
+.subscribe-button {
+    background-color: #494949;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.subscribe-button:hover {
+    background-color: #292929;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    padding: 0 20px;
+    gap: 10px;
+}
+
+.footer-content .footer-section {
+    margin: 0 10px;
+}
+
+.footer-section h4 {
+    margin-bottom: 15px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li a {
+    color: #bbb;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #fff;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+    display: flex; /* Updated to flex to align items in a line */
+    justify-content: center; /* Center the content */
+    align-items: center; /* Align items vertically */
+    gap: 10px; /* Add some space between the text and icons */
+}
+
+.footer-bottom p {
+    margin: 0; /* Remove margin to avoid spacing issues */
+}
+
+.social-icons i {
+    color: #fff; /* Set icon color */
+    margin: 0 5px; /* Add horizontal spacing around icons */
+    font-size: 24px; /* Adjust icon size as needed */
+}
+
+/* Ensure the social icons div and the copyright text are aligned in one line */
+.social-icons {
+    display: flex; /* Display icons inline */
+    align-items: center; /* Align icons vertically */
+}
+
+.bottom-padding {
+    padding-bottom: 100px; /* Adjust the value as needed */
+}
 
 
 @media (max-width: 768px) {
@@ -490,4 +638,14 @@ header::after {
         margin-left: 0; /* Reset margin on smaller screens */
         text-align: center; /* Optionally center the text on smaller screens */
     }
+
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-section {
+        margin-bottom: 20px;
+    }
+
 }
