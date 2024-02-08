@@ -16,22 +16,22 @@
 <body class="bg-black font-sans leading-normal tracking-normal">
 
 <!-- Navbar -->
-<nav class="flex items-center justify-between flex-wrap p-6 bg-purple-900 bg-opacity-30">
-    <div class="flex items-center flex-shrink-0 text-white mr-6">
-        <a href="#Home">
-            <img src="./Media/Global (1).png" alt="Logo" class="logo shadow-xl">
-        </a>
-    </div>
-    <div class="text-sm lg:flex-grow text-lg">
-        <a href="#product" class="text-white hover:text-gray-300 px-4">Product</a>
-        <a href="#solutions" class="text-white hover:text-gray-300 px-4">Solutions</a>
-        <a href="#opensource" class="text-white hover:text-gray-300 px-4">Open Source</a>
-        <a href="#pricing" class="text-white hover:text-gray-300 px-4">Pricing</a>
-    </div>
-    <div>
-        <button class="text-sm px-4 py-2 leading-none rounded text-white border border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Login</button>
-        <button class="text-sm px-4 py-2 leading-none rounded text-white bg-teal-500 hover:bg-teal-600 mt-4 lg:mt-0">Sign up</button>
-    </div>
+<nav class="navbar">
+  <div class="navbar-content">
+      <a href="#Home" class="navbar-logo">
+          <img src="./Media/Global (1).png" alt="Logo" class="logo">
+      </a>
+      <div class="nav-links">
+          <a href="#product" class="nav-link">Product</a>
+          <a href="#solutions" class="nav-link">Solutions</a>
+          <a href="#opensource" class="nav-link">Open Source</a>
+          <a href="#pricing" class="nav-link">Pricing</a>
+      </div>
+  </div>
+  <div class="nav-buttons">
+      <button class="btn login">Login</button>
+      <button class="btn signup">Sign up</button>
+  </div>
 </nav>
 
 <!-- First Header -->
@@ -46,10 +46,12 @@
     <div class="z-10 w-full text-center">
     <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight text-white mt-10">Let's build from here</h1>
     <p class="text-lg lg:text-xl xl:text-2xl mt-6 leading-normal text-gray-400">The world’s leading AI-powered developer platform.</p>
-    <div class="mt-8 inline-flex">
-      <input type="text" placeholder="Email address" class="p-4 rounded-l-full">
-      <button class="px-8 py-4 bg-purple-700 text-white rounded-r-full">Sign up for Global</button>
-    </div>
+    <div class="mt-8 inline-flex input-button-group">
+      <input type="text" placeholder="Email address" class="email-input p-4 rounded-l-full">
+      <button class="signup-button px-8 py-4 bg-purple-700 text-white rounded-r-full flex items-center justify-center">
+        Sign up for Global <span class="arrow">➔</span>
+      </button>
+    </div>     
     <p class="mt-8 text-sm text-gray-400">⬇️Trusted by the world's leading organizations⬇️</p>
     <div class="flex justify-center items-center mt-4">
       <img src="./Media/FBLALogo.png" alt="FBLA Logo" class="company-logo">
@@ -79,8 +81,17 @@
   </div>
 
   <div class="container mx-auto px-4 py-8 empty-div">
-    <!-- Placeholder for future content -->
-  </div>
+    <div class="custom-content flex items-center">
+        <div class="image-container flex-1">
+            <img src="./Media/Graphic_2.png" alt="2nd graphic" class="max-w-xs md:max-w-lg lg:max-w-xl xl:max-w-2xl">
+        </div>
+        <div class="text-container flex-1 text-gray-500 flex items-center justify-center">
+            <p>This is placement text i do not know what to put here daniel why dont you do your job and bs your way to add some stuff here what stuff to add i dunno please just add stuff here man im begging you im carrying rn and you had so many cool css ideas and we are using none of them so far</p>
+        </div>
+    </div>
+</div>
+
+  
 
 <!-- Additional Div with Pink Hover Effect -->
 <div class="productivity-section">
@@ -100,7 +111,14 @@
 </div>
 
 <div class="container mx-auto px-4 py-8 empty-div">
-  <!-- Placeholder for future content -->
+  <div class="custom-content flex items-center">
+      <div class="image-container flex-1">
+          <img src="./Media/Graphic_2.png" alt="2nd graphic" class="max-w-xs md:max-w-lg lg:max-w-xl xl:max-w-2xl">
+      </div>
+      <div class="text-container flex-1 text-gray-500 flex items-center justify-center">
+          <p>This is placement text i do not know what to put here daniel why dont you do your job and bs your way to add some stuff here what stuff to add i dunno please just add stuff here man im begging you im carrying rn and you had so many cool css ideas and we are using none of them so far</p>
+      </div>
+  </div>
 </div>
 
 <div class="productivity-section">
@@ -123,7 +141,14 @@
 </div>
 
 <div class="container mx-auto px-4 py-8 empty-div">
-  <!-- Placeholder for future content -->
+  <div class="custom-content flex items-center">
+      <div class="image-container flex-1">
+          <img src="./Media/Graphic_2.png" alt="2nd graphic" class="max-w-xs md:max-w-lg lg:max-w-xl xl:max-w-2xl">
+      </div>
+      <div class="text-container flex-1 text-gray-500 flex items-center justify-center">
+          <p>This is placement text i do not know what to put here daniel why dont you do your job and bs your way to add some stuff here what stuff to add i dunno please just add stuff here man im begging you im carrying rn and you had so many cool css ideas and we are using none of them so far</p>
+      </div>
+  </div>
 </div>
 
 <!-- Cool section i did not steal -->

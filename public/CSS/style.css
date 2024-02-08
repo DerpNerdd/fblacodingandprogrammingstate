@@ -12,43 +12,61 @@ html, body {
     background-color: #000;
 }
 
-nav {
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 2rem; /* Reduced padding for a shorter navbar */
-    position: relative; /* Ensure navbar is not sticky and scrolls with the page */
-    width: 100%;
-    background: rgba(128, 0, 128, 0.5); /* Adjust opacity as needed */
-    z-index: 50;
+    padding: 1rem 1rem;
+    background: rgba(128, 0, 128, 0.05);
+    color: white;
 }
 
-.logo {
-    height: 50px; /* Adjust the logo size as needed for a shorter navbar */
-    filter: drop-shadow(0px 0px 8px white);
+.navbar-content, .nav-links, .nav-buttons {
+    display: flex;
+    align-items: center;
 }
 
-.nav-links li a, .nav-buttons button {
-    margin: 0 15px;
+.navbar-logo .logo {
+    height: 80px; /* Adjust logo size */
+    margin-right: 20px; /* Space between logo and links */
+}
+
+.nav-link {
+    margin-right: 15px; /* Space between links */
     text-decoration: none;
     color: white;
-    font-size: 16px; /* Adjust font size for readability within the shorter navbar */
-    padding: 8px 0;
+    font-size: 16px;
 }
 
-.nav-buttons button {
-    padding: 8px 16px; /* Adjust padding for a proportionate look in the shorter navbar */
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 8px 16px;
     background-color: transparent;
     border: 1px solid white;
-    border-radius: 0.375rem;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.nav-buttons button:hover {
+.btn.login:hover {
     background-color: white;
-    color: #6200ea; /* Adjust hover color to fit your design */
+    color: #6200ea;
 }
+
+.btn.signup {
+    background-color: #6200ea;
+    color: white;
+}
+
+.btn.signup:hover {
+    background-color: #7d3cf8;
+}
+
 
 header {
     position: relative;
@@ -71,6 +89,72 @@ header::after {
     background: linear-gradient(to top, #000, transparent);
     z-index: 20; /* Ensure it's above the video but below the text */
 }
+
+/* Base Styles */
+.input-button-group {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .email-input {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    font-size: 18px; /* Increased font size */
+  }
+  
+  .email-input:focus {
+    outline: none;
+    border-color: #71717A;
+  }
+  
+  .email-input::placeholder {
+    transition: opacity 0.3s ease;
+  }
+  
+  .email-input:focus::placeholder {
+    opacity: 0;
+  }
+  
+  /* Button Enhancements */
+  .signup-button {
+    position: relative;
+    transition: all 0.3s ease;
+    font-size: 20px; /* Increased font size */
+    display: inline-flex; /* Align text and arrow */
+    align-items: center; /* Center items vertically */
+    gap: 8px; /* Space between text and arrow */
+  }
+  
+  .signup-button:hover {
+    background-color: #805ad5;
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+  }
+  
+  .signup-button .arrow {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .signup-button:hover .arrow {
+    transform: translateX(4px); /* Move arrow to the right */
+    opacity: 1;
+  }
+  
+  /* Additional Interactive Elements */
+  .email-input:focus + .signup-button {
+    box-shadow: 0 0 8px rgba(128, 90, 213, 0.8); /* Glow effect on focus */
+  }
+  
+  /* Placeholder Transition Effect */
+  .email-input::placeholder {
+    font-style: italic;
+    color: #AAA; /* Lighter color for placeholder */
+  }
+  
+  /* Text and Arrow Size Adjustments */
+  .signup-button, .email-input {
+    padding: 12px 20px; /* Larger padding for bigger elements */
+    border-radius: 9999px; /* Fully rounded corners */
+  }
+  
 
 .centered-gif {
     width: 10%; /* Smaller gif */
@@ -303,12 +387,56 @@ header::after {
     opacity: 1; /* Show effect on hover */
 }
 
-.empty-div {
-    height: 50px; /* Example height */
-    margin: 20px 0; /* Add some vertical space around the empty divs */
-    /* Optional: Add other styles like border, padding, etc. */
-  }
   
+  .empty-div {
+    position: relative; /* This establishes a new stacking context */
+    z-index: 10; /* Adjust the z-index to ensure it's above other content */
+}
+
+.custom-content {
+    display: flex;
+    align-items: center;
+}
+
+.image-container img {
+    width: auto; /* Adjust based on the actual size you want */
+    max-width: 100%; /* Ensures the image is not bigger than its container */
+    height: auto; /* Keeps the aspect ratio of the image */
+}
+
+.image-container {
+    position: relative;
+    overflow: hidden; /* Ensure pseudo-element does not extend outside the container */
+}
+
+.image-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle closest-side, rgba(201, 201, 201, 0.2) 50%, transparent 100%);
+    opacity: 0; /* Start fully transparent */
+    transition: opacity 0.5s ease; /* Transition opacity */
+    z-index: -1; /* Ensure it's below the image content */
+}
+
+.image-container:hover::before {
+    opacity: 1; /* On hover, become fully visible */
+}
+
+
+.text-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 20px;
+    color: gray;
+    font-size: x-large;
+}
+
+
 
 @media (max-width: 768px) {
     .nav-links, .nav-buttons {
@@ -351,5 +479,14 @@ header::after {
 
     .info-content {
         margin-bottom: 20px;
+    }
+
+    .custom-content {
+        flex-direction: column;
+    }
+
+    .text-container p {
+        margin-left: 0; /* Reset margin on smaller screens */
+        text-align: center; /* Optionally center the text on smaller screens */
     }
 }
