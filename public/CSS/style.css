@@ -29,6 +29,7 @@ html, body {
 .navbar-logo .logo {
     height: 80px; /* Adjust logo size */
     margin-right: 20px; /* Space between logo and links */
+    background: radial-gradient(circle closest-side, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
 }
 
 .nav-link {
