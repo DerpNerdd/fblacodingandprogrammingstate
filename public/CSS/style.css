@@ -591,20 +591,42 @@ header::after {
 
   }
   
-  .custom-info-card .info-image img {
-    position: absolute;
-    bottom: 0; /* Align with the bottom of the parent */
-    width: 120%; /* Make the image larger */
-    left: 50%;
-    transform: translateX(-50%); /* Center the image */
-    opacity: 0.8; /* Dim the image */
-    z-index: 1;
+  .custom-info-card .content-layer {
+    display: flex;
+    justify-content: space-between; /* Ensure content is spaced out properly */
+    position: relative; /* Establish a stacking context */
+    z-index: 2; /* Above the image */
   }
   
-  .custom-info-card .content-layer {
-    position: relative;
-    z-index: 2; /* Ensure text overlays the image */
+  .custom-info-card .info-image img {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120%; /* Adjust size as needed */
+    opacity: 0.8; /* Dim the image */
+    z-index: 1; /* Ensure image is below the text */
+    
   }
+  
+  .custom-info-card .info-content {
+    z-index: 3; /* Ensure text is above the image */
+    position: relative; /* Allows z-index to take effect */
+    flex: 1; /* Each text block takes equal width */
+    padding: 0 20px; /* Add some padding for spacing */
+    margin-top: -240px; /* Moves the content up */
+
+  }
+  
+  /* Additional styles to ensure text alignment */
+  .custom-info-card .info-content:first-child {
+    text-align: left; /* Ensures left text alignment */
+  }
+  
+  .custom-info-card .info-content:last-child {
+    text-align: right; /* Ensures right text alignment */
+  }
+  
   
 
 @media (max-width: 768px) {
