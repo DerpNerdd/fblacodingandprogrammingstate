@@ -1,0 +1,163 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f0f0; /* Lighter shade for the light theme background */
+    color: #333;
+}
+
+/* Top navigation bar styling */
+.top-navbar {
+    background: #e0e0e0; /* Lighter shade for the top navbar */
+    height: 50px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+/* Hamburger button styling */
+.hamburger {
+    padding: 15px 15px;
+    display: inline-block;
+    cursor: pointer;
+    transition-property: opacity, filter;
+    transition-duration: 0.15s;
+    transition-timing-function: linear;
+    font: inherit;
+    color: inherit;
+    text-transform: none;
+    background-color: transparent;
+    border: 0;
+    margin: 0;
+    overflow: visible;
+}
+
+.hamburger-box {
+    width: 35px;
+    height: 24px;
+    display: inline-block;
+    position: relative;
+}
+
+.hamburger-inner {
+    background-color: #333; /* Dark color for contrast */
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    border-radius: 4px;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    transition: background-color 0.15s ease-in-out;
+}
+
+.hamburger-inner::before,
+.hamburger-inner::after {
+    content: "";
+    display: block;
+    background-color: #333; /* Ensuring visibility */
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    border-radius: 4px;
+    transition: transform 0.15s ease-in-out, opacity 0.15s ease-in-out;
+}
+
+.hamburger-inner::before {
+    transform: translateY(-10px);
+}
+
+.hamburger-inner::after {
+    transform: translateY(10px);
+}
+
+/* Dashboard content styling */
+.dashboard-content {
+    padding: 20px;
+    background: #ffffff; /* White background for content area */
+    min-height: calc(100% - 50px);
+}
+
+/* Side navigation bar styling */
+.side-navbar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 250px;
+    background: #d0d0d0; /* Lighter shade for the side navbar */
+    color: #333; /* Dark text for readability */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.side-navbar.active {
+    transform: translateX(0);
+}
+
+/* Footer styling */
+.dashboard-footer {
+    background: #e0e0e0; /* Lighter shade for the footer */
+    padding: 10px 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+/* Theme toggle button styling */
+.theme-toggle {
+    margin-left: auto;
+    padding: 8px 16px;
+    background: #525252; /* Neutral color for the button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Dark theme styles */
+body.dark-theme {
+    background: #1e1e1e; /* Darker shade for the dark theme background */
+    color: #c7c7c7; /* Light text for readability */
+}
+
+body.dark-theme .top-navbar,
+body.dark-theme .dashboard-footer {
+    background: #171717; /* Even darker shade for headers and footers */
+}
+
+body.dark-theme .side-navbar {
+    background: #252525; /* Dark side navbar for contrast */
+    color: #c7c7c7; /* Light text for readability */
+}
+
+body.dark-theme .hamburger-inner,
+body.dark-theme .hamburger-inner::before,
+body.dark-theme .hamburger-inner::after {
+    background-color: #c7c7c7; /* Light bars for visibility */
+}
+
+body.dark-theme .dashboard-content {
+    background: #2d2d2d; /* Dark background for content area */
+}
+
+/* Close button for the side navbar */
+.close-nav {
+    font-size: 30px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    color: #747474;
+}
