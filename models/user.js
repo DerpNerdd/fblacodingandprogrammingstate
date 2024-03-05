@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const validator = require('validator'); // npm install validator
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -7,9 +8,17 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    validate: [validator.isEmail, 'Please provide a valid email']
+  },
   password: {
     type: String,
-    required: true
+    required: true,
+    minlength: 8
   }
 });
 

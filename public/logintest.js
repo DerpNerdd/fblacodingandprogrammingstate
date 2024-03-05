@@ -17,3 +17,26 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+document.getElementById('loginButton').addEventListener('click', function() {
+    const username = document.querySelector('input[name="username"]').value;
+    const password = document.querySelector('input[name="password"]').value;
+
+    // Assuming you have a route set up to handle POST requests to '/login'
+    fetch('/logintest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/dashboard.html';
+        } else if (response.status === 401) {
+            alert('Invalid username or password. Please try again.');
+        } else {
+            alert('An error occurred. Please try again later.');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+    
+});

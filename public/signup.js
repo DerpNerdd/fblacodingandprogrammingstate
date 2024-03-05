@@ -18,14 +18,28 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-function checkPasswordsMatch() {
-    var passwordInput = document.getElementById("passwordInput");
-    var confirmPasswordInput = document.getElementById("confirmPasswordInput");
-    var passwordMatchMessage = document.getElementById("passwordMatchMessage");
+document.getElementById('signupButton').addEventListener('click', function() {
+    const username = document.querySelector('input[name="username"]').value;
+    const password = document.querySelector('input[name="password"]').value;
+    const confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
 
-    if (passwordInput.value !== confirmPasswordInput.value) {
-        passwordMatchMessage.style.display = "block";
-    } else {
-        passwordMatchMessage.style.display = "none";
+    if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
     }
-}
+
+    // Assuming you have a route set up to handle POST requests to '/signup'
+    fetch('/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/index.html';
+        } else {
+            alert('Failed to create an account. Please try again.');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
