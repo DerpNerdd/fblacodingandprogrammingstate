@@ -1,45 +1,55 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // Dynamically generate background spans
     const section = document.getElementById("dynamicBackground");
-    const numberOfSpans = 150; // Adjust the number of spans you want to generate
-
+    const numberOfSpans = 150;
     for (let i = 0; i < numberOfSpans; i++) {
         const span = document.createElement("span");
         section.appendChild(span);
-
         span.addEventListener("mouseover", () => {
             span.style.transition = "0s";
             span.style.background = "#3c0568";
         });
-
         span.addEventListener("mouseout", () => {
             span.style.transition = "1.5s";
             span.style.background = "#181818";
         });
     }
-});
 
-document.getElementById('signupButton').addEventListener('click', function() {
-    const username = document.querySelector('input[name="username"]').value;
-    const password = document.querySelector('input[name="password"]').value;
-    const confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
-
-    if (password !== confirmPassword) {
-        alert('Passwords do not match.');
-        return;
-    }
-
-    // Assuming you have a route set up to handle POST requests to '/signup'
-    fetch('/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    })
-    .then(response => {
-        if (response.ok) {
-            window.location.href = '/index.html';
-        } else {
-            alert('Failed to create an account. Please try again.');
-        }
-    })
-    .catch(error => console.error('Error:', error));
+    // Handle signup form submission
+    document.addEventListener("DOMContentLoaded", () => {
+        const signupForm = document.getElementById('signupForm'); // Ensure your form has an id="signupForm"
+      
+        signupForm.addEventListener('submit', async (e) => {
+          e.preventDefault(); // Prevent the default form submission
+      
+          const formData = new FormData(signupForm);
+          const data = Object.fromEntries(formData.entries());
+      
+          // Simple validation
+          if (data.password !== data.confirmPassword) {
+            alert('Passwords do not match.');
+            return;
+          }
+      
+          try {
+            const response = await fetch('/signup', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data)
+            });
+      
+            if (response.ok) {
+              alert('Signup successful');
+              window.location.href = '/index.html'; // Redirect on success
+            } else {
+              const errorText = await response.text();
+              alert(`Signup failed: ${errorText}`);
+            }
+          } catch (error) {
+            console.error('Signup error:', error);
+            alert('Signup failed. Please try again.');
+          }
+        });
+      });
+      
 });

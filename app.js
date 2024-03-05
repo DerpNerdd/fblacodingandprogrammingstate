@@ -1,55 +1,46 @@
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const User = require('./models/user'); // Adjust the path as necessary
 
-// Express app initialization
+// Connect to MongoDB - Replace <your_connection_string> with your actual connection string
+mongoose.connect("mongodb+srv://DerpNerd:KingAlanSanchez2007@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+// Define user schema and model
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true }
+});
+
+userSchema.pre('save', async function(next) {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+});
+
+const User = mongoose.model('User', userSchema);
+
+// Initialize Express app
 const app = express();
+app.use(express.json());
+app.use(express.static('public')); // Serve static files from the 'public' directory
 
-// MongoDB connection URI
-const uri = "mongodb+srv://DerpNerd:KingAlanSanchez2007@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority";
-mongoose.connect(uri)
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log('Error connecting to MongoDB:', err));
-
-app.use(express.json()); // For parsing application/json
-app.use(express.static(path.join(__dirname, 'public')));
-
+// Signup route
 app.post('/signup', async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashedPassword });
-    await user.save();
-    res.status(201).send('Account created successfully');
-  } catch (err) {
-    console.log(err);
-    res.status(500).send('Error creating account. Please try again.');
-  }
-});
-
-// Login route
-app.post('/logintest', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(401).send('Invalid username or password.');
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).send('Invalid username or password.');
-    }
-    // Redirecting from server-side won't work for AJAX requests, handle redirect on client-side
-    res.status(200).send('Login successful');
+    const { email, username, password } = req.body;
+    const newUser = new User({ email, username, password });
+    await newUser.save();
+    res.status(201).send('User created successfully');
   } catch (err) {
     console.error(err);
-    res.status(500).send('Error logging in. Please try again.');
+    res.status(500).send('Error creating user');
   }
 });
 
-// Start the server on port 3000
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
+// Start the server
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server running on port ${port}`));
