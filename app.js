@@ -41,6 +41,27 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+app.post('/logintest', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username }).exec();
+    if (!user) {
+      return res.status(404).send('User not found.');
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).send('Incorrect password.');
+    }
+
+    res.send('Login successful');
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).send('An error occurred during the login process.');
+  }
+});
+
+
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server running on port ${port}`));

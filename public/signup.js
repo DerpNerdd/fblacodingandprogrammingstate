@@ -16,40 +16,34 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Handle signup form submission
-    document.addEventListener("DOMContentLoaded", () => {
-        const signupForm = document.getElementById('signupForm'); // Ensure your form has an id="signupForm"
-      
-        signupForm.addEventListener('submit', async (e) => {
-          e.preventDefault(); // Prevent the default form submission
-      
-          const formData = new FormData(signupForm);
-          const data = Object.fromEntries(formData.entries());
-      
-          // Simple validation
-          if (data.password !== data.confirmPassword) {
-            alert('Passwords do not match.');
-            return;
-          }
-      
-          try {
-            const response = await fetch('/signup', {
+    document.getElementById('signupButton').addEventListener('click', async (e) => {
+      e.preventDefault(); // Prevent the default form submission
+
+      const formData = new FormData(signupForm);
+      const data = Object.fromEntries(formData.entries());
+
+      if (data.password !== data.confirmPassword) {
+          alert('Passwords do not match.');
+          return;
+      }
+
+      try {
+          const response = await fetch('/signup', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(data)
-            });
-      
-            if (response.ok) {
+          });
+
+          if (response.ok) {
               alert('Signup successful');
               window.location.href = '/index.html'; // Redirect on success
-            } else {
+          } else {
               const errorText = await response.text();
               alert(`Signup failed: ${errorText}`);
-            }
-          } catch (error) {
-            console.error('Signup error:', error);
-            alert('Signup failed. Please try again.');
           }
-        });
-      });
-      
+      } catch (error) {
+          console.error('Signup error:', error);
+          alert('Signup failed. Please try again.');
+      }
+  });
 });

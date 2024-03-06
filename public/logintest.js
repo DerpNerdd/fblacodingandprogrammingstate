@@ -17,8 +17,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
-
-document.getElementById('loginButton').addEventListener('click', function() {
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
     const username = document.querySelector('input[name="username"]').value;
     const password = document.querySelector('input[name="password"]').value;
 
@@ -27,7 +27,7 @@ document.getElementById('loginButton').addEventListener('click', function() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
-    })
+      })
     .then(response => {
         if (response.ok) {
             window.location.href = '/dashboard.html';
