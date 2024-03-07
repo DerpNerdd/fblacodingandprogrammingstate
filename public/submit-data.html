@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Partner Information</h1>
-    <form action="/submit-partner-info" method="post">
+    <form id="partnerForm">
         <label for="orgName">Organization Name:</label>
         <input type="text" id="orgName" name="orgName"><br><br>
 
@@ -27,34 +27,9 @@
     </form>
 
     <button onclick="window.location.href='view-data.html'">View Submitted Data</button>
-    <button onclick="window.location.href='hometest.html'">Home Test Page</button>
+    <button onclick="window.location.href='index.html'">Home Test Page</button>
 
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('/user-info')
-                .then(response => response.json())
-                .then(user => {
-                    if (user && user.username) {
-                        document.getElementById('user-info').textContent = `Welcome, ${user.username}`;
-                        document.getElementById('logout-btn').style.display = 'block';
-                        document.getElementById('login-btn').style.display = 'none';
-                        document.getElementById('register-btn').style.display = 'none';
-                    } else {
-                        document.getElementById('login-btn').style.display = 'block';
-                        document.getElementById('register-btn').style.display = 'block';
-                        document.getElementById('logout-btn').style.display = 'none';
-                    }
-                });
-        });
-    
-        function logout() {
-            fetch('/logout')
-                .then(() => {
-                    window.location.href = '/';
-                });
-        }
-    </script>
+    <script src="./submit-data.js"></script>
     
     <div id="user-info"></div>
     <button id="logout-btn" onclick="logout()" style="display:none;">Logout</button>

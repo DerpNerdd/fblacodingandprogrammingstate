@@ -2,9 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-// Connect to MongoDB - Replace <your_connection_string> with your actual connection string
-mongoose.connect("mongodb+srv://DerpNerd:KingAlanSanchez2007@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
+// Connect to MongoDB
+mongoose.connect("mongodb+srv://DerpNerd:KingAlanSanchez2007@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority")
+  .then(() => console.log('MongoDB connected :D'))
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Define user schema and model
@@ -14,6 +14,18 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true }
 });
 
+// Define partner schema and model
+const partnerSchema = new mongoose.Schema({
+  orgName: String,
+  orgType: String,
+  resources: String,
+  contactName: String,
+  contactEmail: String
+});
+
+const Partner = mongoose.model('Partner', partnerSchema);
+const User = mongoose.model('User', userSchema);
+
 userSchema.pre('save', async function(next) {
   if (this.isModified('password')) {
     this.password = await bcrypt.hash(this.password, 10);
@@ -21,12 +33,10 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-const User = mongoose.model('User', userSchema);
-
 // Initialize Express app
 const app = express();
 app.use(express.json());
-app.use(express.static('public')); // Serve static files from the 'public' directory
+app.use(express.static('public'));
 
 // Signup route
 app.post('/signup', async (req, res) => {
@@ -41,6 +51,7 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+// Login route
 app.post('/logintest', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -61,6 +72,34 @@ app.post('/logintest', async (req, res) => {
   }
 });
 
+app.post('/submit-partner-info', async (req, res) => {
+  try {
+    const newPartner = new Partner(req.body);
+    await newPartner.save();
+    res.status(201).json({ message: 'Partner information saved successfully' }); // Send JSON response
+  } catch (err) {
+    console.error('Error submitting partner info:', err);
+    res.status(500).json({ message: 'Error saving partner information' }); // Send JSON even on error
+  }
+});
+
+
+// Placeholder route for user-info if needed
+app.get('/user-info', (req, res) => {
+  // Logic to retrieve user info, or placeholder response
+  res.json({ username: 'ExampleUser' });
+});
+
+// Route to get partner info
+app.get('/get-partner-info', async (req, res) => {
+  try {
+    const partners = await Partner.find({});
+    res.json(partners);
+  } catch (err) {
+    console.error('Error fetching partner info:', err);
+    res.status(500).send('Error fetching partner information');
+  }
+});
 
 // Start the server
 const port = process.env.PORT || 3000;
