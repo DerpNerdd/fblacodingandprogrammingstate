@@ -1,4 +1,3 @@
-
 # FBLA Coding and Development STATE
 
 This is a revised version of the previous FBLA C&P repository that is focused in making better UI, UX, Database, and Professional choices. 
@@ -34,15 +33,20 @@ include information on at least 25 different partners (real or fictional), with 
 - Functionality: Speak to all aspects of the topic
 ## Documentation
 
-[Documentation (will be added later)](https://linktodocumentation)
-
+- [Node.js Documentation](https://nodejs.org/docs/latest/api/)
+- [MongoDB Documentation](https://www.mongodb.com/docs/)
+- [Tailwind Documentation](https://v2.tailwindcss.com/docs)
+- [FontAwesome Documentation](https://docs.fontawesome.com)
 
 ## Deployment
 
-To deploy this project run (will be added later)
-
+To deploy this project:
+- Install Node.js
+- Open Node.js terminal
+- Change directories to software folder
+- Run:
 ```bash
-  npm run deploy
+  node app.js
 ```
 
 
@@ -51,33 +55,32 @@ To deploy this project run (will be added later)
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/AlanSanchez317/fblacodingandprogrammingstate.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd my-project
+  cd ../fblacodingandprogrammingstate
 ```
 
-Install dependencies
+Run App.js
 
 ```bash
-  npm install
+  node app.js
 ```
 
-Start the server
+Wait for connection message
 
 ```bash
-  npm run start
+  MongoDB connected :D
 ```
 
 
-## Running Tests
+## Downloading Dependencies 
 
-To run tests, run the following command
+To download anything onto the project, run:
 
 ```bash
-  npm run test
+  npm install {insert name here}
 ```
-
