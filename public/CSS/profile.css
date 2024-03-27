@@ -48,8 +48,8 @@ html, body {
     margin-right: 10px;
     padding: 8px 16px;
     background-color: transparent;
-    border: 1px solid;
-    border-radius: 6px;
+    border: 1px solid white;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
     background-color: white;
@@ -71,21 +71,22 @@ html, body {
 }
 
 main{
-    position: relative;
-    top: 5%;
-    left: 20%;
-    display: flex;
-    max-width: 90rem;
+    flex-direction: row;
+    justify-content: center;
+    width: auto;
+    margin-top: 5vh;
 }
-aside{
+.user-info{
     position: relative;
     right: 0;
-    width: 17vw;
+    width: 20rem;
+    padding-top: 2rem;
     justify-content: center;
     margin-right: 1vw;
 }
 .names{
     color: white;
+    padding-bottom: 2rem;
 }
 #name{
     font-weight: 400;
@@ -95,16 +96,15 @@ aside{
     font-weight: 100;
     margin-top: 4px;
 }
-aside img{
+.user-info img{
     border-radius: 50%;
-    width: 16vw;
-    height: 16vw;
+    width: 19rem;
+    height: 19rem;
     max-width: 23rem;
     max-height: 23rem;
 }
-aside button{
-    width: 16vw;
-    max-width: 23rem;
+.user-info button{
+    width: 20rem;
     height: 2rem;
     color: white;
     text-align: center;
@@ -115,7 +115,7 @@ aside button{
     position: relative;
     left: 0;
     color: white;
-    width: auto;
+    width: 60vw;
 }
 .data-head-text{
     display: flex;
@@ -133,9 +133,28 @@ aside button{
     justify-items: center;
 }
 .data-sets{
-    height: 8rem;
+    height: 9rem;
     border: white 1px solid;
-    width: 20vw;
+    width: 28vw;
     border-radius: 8px;
     margin: 8px;
+}
+
+a:active{
+    text-decoration: none;
+}
+a:link{
+    text-decoration: none;
+}
+a{
+    text-decoration: none;
+}
+a:visited{
+    text-decoration: none;
+    color: white;
+}
+@media (max-width: 1000px){
+    main{
+        
+    }
 }

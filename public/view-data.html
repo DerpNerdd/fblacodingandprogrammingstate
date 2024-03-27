@@ -15,14 +15,39 @@
 </head>
 <body>
     <h1>Partner Information</h1>
+    <!-- Filters -->
+<div>
+    <input type="text" id="searchInput" placeholder="Search...">
+    <select id="stateFilter">
+        <option value="">Select State</option>
+        <!-- States will be populated here -->
+      </select>
+      <select id="cityFilter">
+        <option value="">Select City</option>
+        <!-- Cities will be populated here based on selected state -->
+      </select>
+      
+    <select id="nameSort">
+      <option value="">Sort by Name</option>
+      <option value="asc">Name A-Z</option>
+      <option value="desc">Name Z-A</option>
+    </select>
+    <button onclick="applyFilters()">Apply Filters</button>
+  </div>
+  
     <table id="data-table" border="1">
         <tr>
-            <th>Submitter ID</th>
-            <th>Organization Name</th>
-            <th>Type of Organization</th>
-            <th>Resources Available</th>
-            <th>Contact Name</th>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
             <th>Contact Email</th>
+            <th>Contact Number</th>
+            <th>Org Name</th>
+            <th>Org Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Resources</th>
+            <th>Additional Info</th>
         </tr>
     </table>
 
