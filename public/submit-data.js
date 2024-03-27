@@ -1,9 +1,16 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
+    console.log('Document loaded');
     fetch('/user-info')
-        .then(response => response.json())
-        .then(user => {
-            if (user && user.username) {
-                document.getElementById('user-info').textContent = `Welcome, ${user.username}`;
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('User info:', data);
+            if (data.username) {
+                document.getElementById('user-info').textContent = `Welcome, ${data.username}!`;
                 document.getElementById('logout-btn').style.display = 'block';
                 document.getElementById('login-btn').style.display = 'none';
                 document.getElementById('register-btn').style.display = 'none';
@@ -12,8 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('register-btn').style.display = 'block';
                 document.getElementById('logout-btn').style.display = 'none';
             }
-        });
+        })
+        .catch(error => console.error('Error fetching user info:', error));
 });
+
+
 
 function logout() {
     fetch('/logout')

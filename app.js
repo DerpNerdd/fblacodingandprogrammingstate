@@ -5,7 +5,20 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const MongoStore = require('connect-mongo');
+const flash = require('connect-flash');
+const path = require('path');
 
+const app = express(); // Initialize the express application here
+
+// Now you can safely use 'app' for setting views and engine
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+// Parse JSON bodies
+app.use(express.json());
+
+// Parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
 mongoose.connect("mongodb+srv://DerpNerd:KingAlanSanchez2007@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority")
@@ -38,56 +51,86 @@ const User = mongoose.model('User', userSchema);
 
 // Passport Local Strategy
 passport.use(new LocalStrategy(
-  { usernameField: 'email' }, // Use email to login
-  async (email, password, done) => {
+  { usernameField: 'username' },
+  async (username, password, done) => {
+    console.log(`Authenticating user: ${username}`);
     try {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ username });
       if (!user) {
-        return done(null, false, { message: 'Incorrect email.' });
+        console.log(`User not found: ${username}`);
+        return done(null, false, { message: 'Incorrect username.' });
       }
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
+        console.log(`Password mismatch for user: ${username}`);
         return done(null, false, { message: 'Incorrect password.' });
       }
+      console.log(`User authenticated: ${username}`);
       return done(null, user);
     } catch (err) {
+      console.error(`Authentication error for user ${username}:`, err);
       return done(err);
     }
   }
 ));
+
 
 // Passport serializeUser and deserializeUser
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 passport.deserializeUser((id, done) => {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
+  User.findById(id)
+    .then(user => done(null, user))
+    .catch(err => done(err));
 });
+
 
 userSchema.pre('save', async function(next) {
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10);
+  if (!this.isModified('password')) return next();
+  console.log(`Original password: ${this.password}`);
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    console.log(`Hashed password: ${this.password}`);
+    next();
+  } catch (error) {
+    console.error('Error hashing password:', error);
+    next(error);
   }
-  next();
 });
 
-const app = express();
-app.use(express.static('public'));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+const sessionStore = MongoStore.create({
+  mongoUrl: 'mongodb+srv://DerpNerd:KingAlanSanchez2007@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority',
+  collectionName: 'sessions'
+});
+
+// Optional: Listen to events from the session store
+sessionStore.on('create', (sessionId) => {
+  console.log(`Session created: ${sessionId}`);
+});
+sessionStore.on('touch', (sessionId) => {
+  console.log(`Session touched: ${sessionId}`);
+});
+sessionStore.on('destroy', (sessionId) => {
+  console.log(`Session destroyed: ${sessionId}`);
+});
 
 app.use(session({
-  secret: 'secret', // Secret used to sign the session ID cookie
+  secret: 'secret',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: 'mongodb+srv://DerpNerd:KingAlanSanchez2007@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority'
-  }),
-    cookie: { maxAge: 1000 * 60 * 60 * 24 } // Example: setting cookie to expire after 24 hours
+  store: sessionStore,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 } // Example: setting cookie to expire after 24 hours
 }));
 
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session()); // This relies on the express-session middleware
+app.use(flash()); // Use connect-flash middleware
+
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html'); // Adjust the path according to your project structure
@@ -95,24 +138,35 @@ app.get('/', (req, res) => {
 
 // Signup route
 app.post('/signup', async (req, res) => {
+  const { email, username, password } = req.body;
   try {
-    const { email, username, password } = req.body;
-    const newUser = new User({ email, username, password });
+    const hashedPassword = await bcrypt.hash(password, 10); // Manually hash the password
+    const newUser = new User({ email, username, password: hashedPassword }); // Use the hashed password
     await newUser.save();
+    console.log(`User ${username} created with hashed password.`);
     res.status(201).send('User created successfully');
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error('Error creating user:', error);
     res.status(500).send('Error creating user');
   }
 });
 
+
+
 app.post('/logintest', 
   passport.authenticate('local', { 
-    successRedirect: '/', // Redirect on success
-    failureRedirect: '/login', // Redirect on failure
-    failureFlash: true // Optional: use flash messages for feedback
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: 'Invalid username or password.' // Use custom flash message
   })
 );
+
+app.get('/login', (req, res) => {
+  // Retrieve flash message and pass it to the template
+  const messages = req.flash('error');
+  res.render('login', { messages: messages });
+});
+
 
 app.post('/submit-partner-info', async (req, res) => {
   try {
@@ -127,10 +181,41 @@ app.post('/submit-partner-info', async (req, res) => {
 
 
 app.get('/user-info', (req, res) => {
+  console.log('Session:', req.session);
+  console.log('Session ID:', req.sessionID);
+  console.log('User in session:', req.user);
+  console.log('Authenticated:', req.isAuthenticated());
   if (req.isAuthenticated()) {
     res.json({ username: req.user.username });
   } else {
     res.json({ username: null });
+  }
+});
+
+// Logout route
+app.get('/logout', (req, res) => {
+  req.logout(function(err) {
+    if (err) {
+      console.error("Error during the logout process:", err);
+      return next(err);
+    }
+    req.session.destroy(function(err) {
+      if (err) {
+        console.error("Error destroying the session:", err);
+        return next(err);
+      }
+      // After logging out and destroying the session, redirect the user.
+      res.redirect('/');
+    });
+  });
+});
+
+
+app.get('/submit-data', (req, res) => {
+  if (req.isAuthenticated()) {
+      res.render('submit-data', { user: req.user });
+  } else {
+      res.render('submit-data', { user: null });
   }
 });
 
