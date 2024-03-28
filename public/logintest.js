@@ -22,21 +22,23 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     const username = document.querySelector('input[name="username"]').value;
     const password = document.querySelector('input[name="password"]').value;
 
-    // Assuming you have a route set up to handle POST requests to '/login'
     fetch('/logintest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
-      })
-    .then(response => {
-        if (response.ok) {
+    })
+    .then(response => response.json()) // Assuming the server responds with JSON
+    .then(data => {
+        if (data.isAuthenticated) {
             window.location.href = '/dashboard.html';
-        } else if (response.status === 401) {
-            alert('Invalid username or password. Please try again.');
         } else {
-            alert('An error occurred. Please try again later.');
+            // Dynamically create or show an error message element
+            alert(data.message || 'Invalid username or password. Please try again.'); // Replace alert with dynamic error display
         }
     })
-    .catch(error => console.error('Error:', error));
-    
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again later.');
+    });
 });
+

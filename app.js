@@ -10,6 +10,7 @@ const path = require('path');
 
 const app = express(); // Initialize the express application here
 
+
 // Now you can safely use 'app' for setting views and engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -49,26 +50,33 @@ const partnerSchema = new mongoose.Schema({
 const Partner = mongoose.model('Partner', partnerSchema);
 const User = mongoose.model('User', userSchema);
 
+passport.use(new LocalStrategy((username, password, done) => {
+  User.findOne({ username: username }, function (err, user) {
+    if (err) { return done(err); }
+    if (!user) {
+      return done(null, false, { message: 'Incorrect username.' });
+    }
+    if (!bcrypt.compareSync(password, user.password)) {
+      return done(null, false, { message: 'Incorrect password.' });
+    }
+    return done(null, user);
+  });
+}));
+
 // Passport Local Strategy
 passport.use(new LocalStrategy(
-  { usernameField: 'username' },
   async (username, password, done) => {
-    console.log(`Authenticating user: ${username}`);
     try {
       const user = await User.findOne({ username });
       if (!user) {
-        console.log(`User not found: ${username}`);
         return done(null, false, { message: 'Incorrect username.' });
       }
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        console.log(`Password mismatch for user: ${username}`);
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
         return done(null, false, { message: 'Incorrect password.' });
       }
-      console.log(`User authenticated: ${username}`);
       return done(null, user);
     } catch (err) {
-      console.error(`Authentication error for user ${username}:`, err);
       return done(err);
     }
   }
@@ -153,13 +161,24 @@ app.post('/signup', async (req, res) => {
 
 
 
-app.post('/logintest', 
-  passport.authenticate('local', { 
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: 'Invalid username or password.' // Use custom flash message
-  })
-);
+app.post('/logintest', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      return res.status(500).json({ message: 'An error occurred' });
+    }
+    if (!user) {
+      return res.status(401).json({ isAuthenticated: false, message: 'Incorrect username or password.' });
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        return res.status(500).json({ message: 'An error occurred during login' });
+      }
+      return res.json({ isAuthenticated: true });
+    });
+  })(req, res, next);
+});
+
+
 
 app.get('/login', (req, res) => {
   // Retrieve flash message and pass it to the template
@@ -192,23 +211,20 @@ app.get('/user-info', (req, res) => {
   }
 });
 
-// Logout route
 app.get('/logout', (req, res) => {
   req.logout(function(err) {
-    if (err) {
-      console.error("Error during the logout process:", err);
-      return next(err);
-    }
+    if (err) { return next(err); }
     req.session.destroy(function(err) {
-      if (err) {
-        console.error("Error destroying the session:", err);
-        return next(err);
-      }
-      // After logging out and destroying the session, redirect the user.
-      res.redirect('/');
+        if (err) {
+            console.error("Error destroying the session:", err);
+            return next(err);
+        }
+        res.clearCookie('connect.sid'); // Clear the session cookie
+        res.redirect('/'); // Redirect to home page or login page
     });
   });
 });
+
 
 
 app.get('/submit-data', (req, res) => {
