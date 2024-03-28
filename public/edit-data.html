@@ -3,19 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Form</title>
-    
-    <meta name="author" content="Alan Sanchez, Daniel Freeman, Oliver Kuopus">
-    <meta name="description" content="Global is the Number One most trusted security site. We provide security for you and your clients information.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta property="og:image" content="">
-    <meta property="og:title" content="">
-    <meta property="og:description" content="">
+    <title>Edit Partner Data</title>
 </head>
 <body>
-    <h1>Partner Information</h1>
-    <form id="partnerForm">
+    <h1>Edit Partner Information</h1>
+    <form id="editPartnerForm">
         <label for="firstName">First Name:</label>
         <input type="text" id="firstName" name="firstName"><br><br>
         
@@ -46,19 +38,9 @@
         <label for="addInformation">Additional Information:</label>
         <input type="text" id="addInformation" name="addInformation"><br><br>
 
-        <input type="submit" value="Submit">
+        <input type="submit" value="Save Changes">
     </form>
 
-    <button onclick="window.location.href='view-data.html'">View Submitted Data</button>
-    <button onclick="window.location.href='index.html'">Home Test Page</button>
-
-    <script src="./submit-data.js"></script>
-    
-    <div id="user-info"></div>
-    <button id="logout-btn" onclick="logout()" style="display:none;">Logout</button>
-    <button id="login-btn" onclick="window.location.href='/login'" style="display:none;">Login</button>
-    <button id="register-btn" onclick="window.location.href='/register'" style="display:block;">Register</button>
-    
-
+    <script src="./edit-data.js"></script>
 </body>
 </html>

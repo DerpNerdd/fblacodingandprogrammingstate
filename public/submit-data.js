@@ -1,62 +1,65 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log('Document loaded');
-    fetch('/user-info')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('User info:', data);
-            if (data.username) {
-                document.getElementById('user-info').textContent = `Welcome, ${data.username}!`;
-                document.getElementById('logout-btn').style.display = 'block';
-                document.getElementById('login-btn').style.display = 'none';
-                document.getElementById('register-btn').style.display = 'none';
-            } else {
-                document.getElementById('login-btn').style.display = 'block';
-                document.getElementById('register-btn').style.display = 'block';
-                document.getElementById('logout-btn').style.display = 'none';
-            }
-        })
-        .catch(error => console.error('Error fetching user info:', error));
-});
+    // Check for user information to customize the UI
+    fetch('/user-info', {
+        credentials: 'include', // Include cookies
+    })
+    .then(response => response.json())
+    .then(data => {
+        const logoutBtn = document.getElementById('logout-btn');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const userInfoDiv = document.getElementById('user-info');
 
+        if (data.username) {
+            // User is logged in
+            userInfoDiv.textContent = `Welcome, ${data.username}!`;
+            logoutBtn.style.display = 'inline'; // Show logout button
+            loginBtn.style.display = 'none';    // Hide login button
+            registerBtn.style.display = 'none'; // Hide register button
+        } else {
+            // User is not logged in
+            userInfoDiv.textContent = '';
+            logoutBtn.style.display = 'none';    // Hide logout button
+            loginBtn.style.display = 'inline';   // Show login button
+            registerBtn.style.display = 'inline';// Show register button
+        }
+    })
+    .catch(error => console.error('Error:', error));
+
+    document.getElementById('partnerForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent the default form submission behavior
+      
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+      
+        // Correctly configured fetch request to send data to the server
+        fetch('/submit-partner-info', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include', // Ensure cookies are included with the request
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message); // Show success message
+          // Redirect or perform additional actions upon success
+        })
+        .catch(error => {
+          console.error('Error submitting form:', error);
+          alert('Error submitting form. Please try again.');
+        });
+    });
+      
+});
 
 
 function logout() {
-    fetch('/logout')
-        .then(() => {
-            window.location.href = '/';
-        });
+    fetch('/logout', {
+        method: 'GET',
+        credentials: 'include', // Ensure cookies are included to clear the session
+    })
+    .then(() => {
+        window.location.href = '/';
+    })
+    .catch(error => console.error('Logout error:', error));
 }
-
-
-document.getElementById('partnerForm').addEventListener('submit', function(e) {
-e.preventDefault(); // Prevent the default form submission
-
-const formData = new FormData(this);
-const data = Object.fromEntries(formData.entries());
-
-fetch('/submit-partner-info', {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify(data)
-})
-.then(response => {
-if(response.ok) {
-return response.json(); // Make sure the server sends back JSON
-} else {
-throw new Error('Failed to submit data');
-}
-})
-.then(data => {
-alert('Data submitted successfully');
-// Optionally, call a function to refresh the data view
-})
-.catch(error => {
-console.error('Submission error:', error);
-alert('Error submitting data');
-});
-});
