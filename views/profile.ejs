@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= userProfile.username %>'s Profile</title>
+</head>
+<body>
+    <h1><%= userProfile.username %>'s Profile</h1>
+    <div>
+        <img src="<%= userProfile.profilePicture || '/path/to/default/profilePicture.png' %>" alt="Profile Picture" style="width: 100px; height: 100px; border-radius: 50%;">
+    </div>
+    <p>Email: <%= userProfile.email %></p> <!-- Consider privacy before displaying email -->
+    <p>Bio: <%= userProfile.bio %></p>
+
+    <div>
+        <h2>Followers: <%= followers.length %></h2>
+        <ul>
+            <% followers.forEach(follower => { %>
+                <li><%= follower.username %></li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Following: <%= following.length %></h2>
+        <ul>
+            <% following.forEach(followee => { %>
+                <li><%= followee.username %></li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Pinned Repositories</h2>
+        <ul>
+            <% pinnedRepositories.forEach(repo => { %>
+                <li><%= repo.name %>: <%= repo.description %></li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <% if (canFollow) { %>
+        <button onclick="followUser('<%= userProfile._id %>')">Follow</button>
+    <% } else { %>
+        <button onclick="unfollowUser('<%= userProfile._id %>')">Unfollow</button>
+    <% } %>
+
+    <script src="/profile.js"></script>
+</body>
+</html>

@@ -29,6 +29,9 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   profilePicture: { type: String, default: '' }, // URL to the image
   bio: { type: String, default: '' },
+  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  pinnedRepositories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Repository' }]
 });
 
 // Define partner schema and model
@@ -568,6 +571,150 @@ userSchema.add({
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   pinnedRepositories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Repository' }]
 });
+
+// Search users
+app.get('/search-users', async (req, res) => {
+  const { username } = req.query;
+  if (!req.isAuthenticated()) {
+      return res.status(403).json({ error: 'Not authenticated' });
+  }
+  try {
+      const users = await User.find({ username: new RegExp(username, 'i') }, 'username')
+                              .lean();
+      res.json(users);
+  } catch (error) {
+      console.error('Error searching users:', error);
+      res.status(500).json({ error: 'Error searching users' });
+  }
+});
+
+
+// Follow a user
+app.post('/follow-user/:userId', async (req, res) => {
+  if (!req.isAuthenticated()) {
+      return res.status(403).send('Not authenticated');
+  }
+  try {
+      const userToFollow = await User.findById(req.params.userId);
+      const currentUser = await User.findById(req.user._id);
+      // Prevent duplicate follows
+      if (!currentUser.following.includes(req.params.userId)) {
+          currentUser.following.push(req.params.userId);
+          userToFollow.followers.push(req.user._id);
+          await currentUser.save();
+          await userToFollow.save();
+          res.json({ message: 'Followed successfully' });
+        } else {
+        res.status(400).json({ message: 'Already following' });
+      }
+  } catch (error) {
+      console.error('Error following user:', error);
+      res.status(500).send('Error following user');
+  }
+});
+
+// Unfollow a user
+app.post('/unfollow-user/:userId', async (req, res) => {
+  if (!req.isAuthenticated()) {
+      return res.status(403).send('Not authenticated');
+  }
+  try {
+      const userToUnfollow = await User.findById(req.params.userId);
+      const currentUser = await User.findById(req.user._id);
+      currentUser.following.pull(req.params.userId);
+      userToUnfollow.followers.pull(req.user._id);
+      await currentUser.save();
+      await userToUnfollow.save();
+      res.json({ message: 'Unfollowed successfully' });
+    } catch (error) {
+      console.error('Error unfollowing user:', error);
+      res.status(400).json({ message: 'Error unfollowing user' });
+    }
+});
+app.get('/profile/:username', async (req, res) => {
+  try {
+    // Log the username for debugging
+    console.log("Requested profile for username:", req.params.username);
+
+    const userProfile = await User.findOne({ username: req.params.username }).lean();
+    
+    // Log the fetched user profile for debugging
+    console.log("Fetched userProfile:", userProfile);
+
+    if (!userProfile) {
+      return res.status(404).send("User not found.");
+    }
+
+    res.render('profile', {
+      userProfile,
+      followers: [], // Example data for testing
+      following: [], // Example data for testing
+      pinnedRepositories: [], // Example data for testing
+      canFollow: false, // Example data for testing
+      isAuthenticated: req.isAuthenticated(),
+      currentUser: req.user
+    });
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).send("Error fetching user profile.");
+  }
+});
+
+
+
+async function getFollowers(userId) {
+  return User.find({ followers: userId }).select('username').lean();
+}
+
+async function getFollowing(userId) {
+  return User.find({ following: userId }).select('username').lean();
+}
+
+async function getPinnedRepositories(userId) {
+  return Repository.find({ owner: userId }).lean(); // Adjust based on your schema
+}
+
+async function canCurrentUserFollow(currentUserId, profileUserId) {
+  if (String(currentUserId) === String(profileUserId)) return false; // Prevent self-follow
+  const currentUser = await User.findById(currentUserId);
+  return !currentUser.following.map(id => id.toString()).includes(String(profileUserId));
+}
+
+
+app.get('/user/:username', async (req, res) => {
+  try {
+    // Extract the username from the URL parameter.
+    const { username } = req.params;
+    
+    // Attempt to find the user by their username.
+    const userProfile = await User.findOne({ username }).lean();
+    
+    // If no user is found, return a 404 error.
+    if (!userProfile) {
+      return res.status(404).send("User not found.");
+    }
+
+    // If a user is found, render the profile template with the user's data.
+    // Make sure the key matches what your EJS template expects.
+    res.render('profile', {
+      userProfile,
+      // If you're not using the following fields in the simplified template, you can omit them.
+      followers: [], 
+      following: [], 
+      pinnedRepositories: [],
+      canFollow: false,
+      isAuthenticated: req.isAuthenticated(),
+      currentUser: req.user
+    });
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).send("Error fetching user profile.");
+  }
+});
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+
 
 
 // Start the server

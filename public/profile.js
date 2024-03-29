@@ -50,48 +50,89 @@ function fetchProfile() {
     .catch(error => console.error('Error:', error));
 }
 
+function searchUsers(username) {
+  fetch(`/search-users?username=${encodeURIComponent(username)}`, { 
+    method: 'GET',
+    credentials: 'include', // For sending cookies with the request
+  })
+  .then(response => response.json())
+  .then(data => {
+    const resultsContainer = document.getElementById('searchResults');
+    resultsContainer.innerHTML = ''; // Clear previous results
 
-app.post('/follow-user/:userId', async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(403).send('Not authenticated');
-  
-    try {
-      const userToFollow = await User.findById(req.params.userId);
-      const currentUser = await User.findById(req.user._id);
-  
-      if (!userToFollow.followers.includes(req.user._id)) {
-        userToFollow.followers.push(req.user._id);
-        currentUser.following.push(req.params.userId);
-  
-        await userToFollow.save();
-        await currentUser.save();
-  
-        res.send({ message: 'User followed successfully.' });
-      } else {
-        res.status(400).send('Already following this user.');
+    data.forEach(user => {
+      const userElement = document.createElement('div');
+      userElement.innerHTML = `
+        <span>${user.username}</span>
+        <button onclick="followUser('${user._id}')">Follow</button>
+        <button onclick="unfollowUser('${user._id}')">Unfollow</button>
+        <a href="/profile/${user.username}">View Profile</a>
+      `;
+      resultsContainer.appendChild(userElement);
+    });
+  })
+  .catch(error => console.error('Error fetching search results:', error));
+}
+
+
+// Add event listener for form submission
+document.getElementById('searchUserForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const username = document.getElementById('usernameSearch').value;
+  searchUsers(username); // Call the searchUsers function with the username
+});
+
+// Use separate functions for updating follower and following counts
+function updateFollowingCount(increment) {
+  const followingCountElement = document.getElementById('followingCount');
+  if (followingCountElement) {
+      let followingCount = parseInt(followingCountElement.innerText) || 0;
+      followingCount += increment;
+      followingCountElement.innerText = followingCount.toString();
+  } else {
+      console.error('Following count element not found.');
+  }
+}
+
+function followUser(userId) {
+  fetch(`/follow-user/${userId}`, {
+      method: 'POST',
+      credentials: 'include',
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Response not OK');
       }
-    } catch (error) {
-      console.error('Error following user:', error);
-      res.status(500).send('Error following user');
-    }
-  });
-  
-  app.post('/unfollow-user/:userId', async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(403).send('Not authenticated');
-  
-    try {
-      const userToUnfollow = await User.findById(req.params.userId);
-      const currentUser = await User.findById(req.user._id);
-  
-      userToUnfollow.followers = userToUnfollow.followers.filter(followerId => followerId.toString() !== req.user._id.toString());
-      currentUser.following = currentUser.following.filter(followingId => followingId.toString() !== req.params.userId.toString());
-  
-      await userToUnfollow.save();
-      await currentUser.save();
-  
-      res.send({ message: 'User unfollowed successfully.' });
-    } catch (error) {
-      console.error('Error unfollowing user:', error);
-      res.status(500).send('Error unfollowing user');
-    }
-  });
-  
+      return response.json();
+  })
+  .then(data => {
+      console.log(data.message);
+      if (data.message === 'Followed successfully') {
+          updateFollowingCount(1); // Update following count when you follow someone
+      } else {
+          console.log(data.message); // Handle other messages like "Already following"
+      }
+  })
+  .catch(error => console.error('Error following user:', error));
+}
+
+function unfollowUser(userId) {
+  fetch(`/unfollow-user/${userId}`, {
+      method: 'POST',
+      credentials: 'include',
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Response not OK');
+      }
+      return response.json();
+  })
+  .then(data => {
+      if (data.message === 'Unfollowed successfully') {
+          updateFollowingCount(-1); // Decrement following count when you unfollow someone
+      } else {
+          console.error(data.message); // Handle potential errors or other messages
+      }
+  })
+  .catch(error => console.error('Error unfollowing user:', error));
+}

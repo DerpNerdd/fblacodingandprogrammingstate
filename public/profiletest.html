@@ -21,9 +21,20 @@
     </form>
 
     <!-- Placeholders for new features -->
-    <div id="followers">Followers: 0</div>
-    <div id="following">Following: 0</div>
-    <div id="pinnedProjects">Pinned Projects: None</div>
+    <div>Follwers: <span id="followerCount">0</span></div>
+    <div>Following: <span id="followingCount">0</span></div>
+    
+    <div id="pinnedRepositories">Pinned Repositories: None</div>
+
+    <!-- Search bar for usernames -->
+<form id="searchUserForm">
+    <input type="text" id="usernameSearch" placeholder="Search for a username...">
+    <input type="submit" value="Search">
+</form>
+
+<!-- Results area -->
+<div id="searchResults"></div>
+
 
     <script src="./profile.js"></script>
 </body>
