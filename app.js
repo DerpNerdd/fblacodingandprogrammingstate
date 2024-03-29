@@ -7,6 +7,17 @@ const LocalStrategy = require('passport-local').Strategy;
 const MongoStore = require('connect-mongo');
 const flash = require('connect-flash');
 const path = require('path');
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './public/uploads/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
 
 // Initialize the express application here
 const app = express();
@@ -15,7 +26,9 @@ const app = express();
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  profilePicture: { type: String, default: '' }, // URL to the image
+  bio: { type: String, default: '' },
 });
 
 // Define partner schema and model
@@ -359,9 +372,6 @@ app.get('/get-all-partner-info', async (req, res) => {
   }
 });
 
-
-
-
 // Route to get unique states
 app.get('/unique-states', async (req, res) => {
   try {
@@ -383,6 +393,180 @@ app.get('/unique-cities', async (req, res) => {
     console.error('Error fetching unique cities:', err);
     res.status(500).send('Error fetching unique cities');
   }
+});
+
+app.put('/change-email', async (req, res) => {
+  if (!req.isAuthenticated()) {
+      return res.status(403).send('Not authenticated');
+  }
+  const { newEmail } = req.body;
+  try {
+      const user = await User.findById(req.user._id);
+      user.email = newEmail;
+      await user.save();
+      // Adding a callback function to req.logout()
+      req.logout(function(err) {
+          if (err) {
+              console.error('Logout error:', err);
+              return res.status(500).send('Error during logout');
+          }
+          res.send({ message: 'Email updated successfully. Please log in again.' });
+      });
+  } catch (error) {
+      console.error('Error updating email:', error);
+      res.status(500).send('Error updating email');
+  }
+});
+
+
+app.put('/change-password', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(403).json({ message: 'Not authenticated' });
+  }
+
+  const { currentPassword, newPassword } = req.body;
+  
+  try {
+    const user = await User.findById(req.user._id);
+    
+    // Check if the current password matches
+    if (!bcrypt.compareSync(currentPassword, user.password)) {
+      return res.status(400).json({ message: 'Current password is incorrect' });
+    }
+    
+    // Update the password
+    user.password = bcrypt.hashSync(newPassword, 10);
+    await user.save();
+
+    // Log the user out after changing the password
+    req.logout(function(err) {
+      if (err) { 
+        console.error('Logout error:', err);
+        return res.status(500).json({ message: 'Error logging out' });
+      }
+      res.json({ message: 'Password updated successfully' });
+    });
+
+  } catch (error) {
+    console.error('Error updating password:', error);
+    res.status(500).json({ message: 'Error updating password' });
+  }
+});
+
+
+app.put('/change-password', async (req, res) => {
+  if (!req.isAuthenticated()) {
+      return res.status(403).send('Not authenticated');
+  }
+  const { currentPassword, newPassword } = req.body;
+  try {
+      const user = await User.findById(req.user._id);
+      if (!bcrypt.compareSync(currentPassword, user.password)) {
+          return res.status(400).send('Incorrect current password');
+      }
+      user.password = bcrypt.hashSync(newPassword, 10);
+      await user.save();
+      res.send('Password updated successfully');
+  } catch (error) {
+      console.error('Error updating password:', error);
+      res.status(500).send('Error updating password');
+  }
+});
+
+app.delete('/delete-account', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(403).json({ message: 'Not authenticated' });
+  }
+  try {
+    await User.findByIdAndDelete(req.user._id);
+    req.logout(function(err) {
+      if (err) {
+        console.error('Logout error:', err);
+        return res.status(500).json({ message: 'Error during logout' });
+      }
+      // Ensure you are sending a JSON response before redirecting or ending the response
+      res.json({ message: 'Account deleted successfully' });
+      // Redirecting via server-side is not effective for SPA or AJAX-based applications
+      // Instead, handle the redirect client-side after successful response
+    });
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    res.status(500).json({ message: 'Error deleting account' });
+  }
+});
+
+// Route to upload profile picture
+app.post('/upload-profile-picture', upload.single('profileImage'), async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(403).send('Not authenticated');
+  }
+  if (!req.file) {
+    return res.status(400).send('No file uploaded.');
+  }
+
+  try {
+    const user = await User.findById(req.user._id);
+    user.profilePicture = `/uploads/${req.file.filename}`; // Adjust the path as needed
+    await user.save();
+    res.send({ message: 'Profile picture updated successfully.' });
+  } catch (error) {
+    console.error('Error updating profile picture:', error);
+    res.status(500).send('Error updating profile picture');
+  }
+});
+
+// Route to update bio
+app.post('/update-bio', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(403).send('Not authenticated');
+  }
+
+  const { bio } = req.body;
+
+  try {
+    const user = await User.findById(req.user._id);
+    user.bio = bio;
+    await user.save();
+    res.send({ message: 'Bio updated successfully.' });
+  } catch (error) {
+    console.error('Error updating bio:', error);
+    res.status(500).send('Error updating bio');
+  }
+});
+
+// Route to get user profile
+app.get('/get-user-profile', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(403).send('Not authenticated');
+  }
+
+  try {
+    const user = await User.findById(req.user._id, 'username email profilePicture bio');
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).send('Error fetching user profile');
+  }
+});
+
+// Assuming a Repository schema exists similar to this
+const repositorySchema = new mongoose.Schema({
+  name: String,
+  description: String,
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  // additional fields as necessary
+});
+
+const Repository = mongoose.model('Repository', repositorySchema);
+
+// Update the User schema
+userSchema.add({
+  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  pinnedRepositories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Repository' }]
 });
 
 
