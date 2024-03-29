@@ -691,3 +691,50 @@ header::after {
     }
 
 }
+
+.topnav {
+    overflow: hidden;
+    padding-top: 5px;
+}
+
+.topnav a {
+    float: left;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbarImage {
+    height: 40px;
+    width: auto;
+}
+
+.rightnav {
+    float: right;
+}
+
+a {
+    color: #fff;
+    border-radius: 15px;
+}
+
+.leftDash{
+    position:absolute;
+    width:25%;
+    min-width: 15rem;
+    height:100%;
+    border-right: 2px white solid;
+    display:flex;
+    justify-content: center;
+}
+
+.leftDash h1{
+    color:white;
+    font-size: 25px;
+}
+
+.rightDash h1{
+    color:white;
+    position:absolute;
+    left:28%;
+}
