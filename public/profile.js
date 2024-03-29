@@ -1,54 +1,69 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Assume fetchProfile is a function that fetches and updates the UI with profile data
-    fetchProfile();
+  fetchProfile(); // Fetch profile data on page load
 
-    document.getElementById('uploadForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData();
-        const image = document.getElementById('profileImage').files[0];
-        formData.append('profileImage', image);
-
-        fetch('/upload-profile-picture', {
-            method: 'POST',
-            body: formData,
-            credentials: 'include',
-        })
-        .then(() => fetchProfile()) // Refresh profile info after image upload
-        .catch(error => console.error('Error:', error));
+  const uploadForm = document.getElementById('uploadForm');
+  if (uploadForm) {
+    uploadForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(this); // 'this' refers to the form
+      fetch('/upload-profile-picture', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Upload success:', data);
+        fetchProfile(); // Refresh profile data
+      })
+      .catch(error => console.error('Upload error:', error));
     });
+  }
 
-    document.getElementById('editBioBtn').addEventListener('click', () => {
-        document.getElementById('editBioForm').style.display = 'block';
+  const editBioBtn = document.getElementById('editBioBtn');
+  if (editBioBtn) {
+    editBioBtn.addEventListener('click', () => {
+      document.getElementById('editBioForm').style.display = 'block';
     });
+  }
 
-    document.getElementById('editBioForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const bio = document.getElementById('bioText').value;
+  const editBioForm = document.getElementById('editBioForm');
+  if (editBioForm) {
+    editBioForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const bio = document.getElementById('bioText').value;
 
-        fetch('/update-bio', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ bio }),
-            credentials: 'include',
-        })
-        .then(() => {
-            fetchProfile(); // Refresh profile info after bio update
-            document.getElementById('editBioForm').style.display = 'none';
-        })
-        .catch(error => console.error('Error:', error));
+      fetch('/update-bio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bio }),
+        credentials: 'include',
+      })
+      .then(() => {
+        fetchProfile(); // Refresh profile info after bio update
+        document.getElementById('editBioForm').style.display = 'none';
+      })
+      .catch(error => console.error('Error:', error));
     });
+  }
+
+  const searchUserForm = document.getElementById('searchUserForm');
+  if (searchUserForm) {
+    searchUserForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('usernameSearch').value;
+      searchUsers(username); // Call the searchUsers function with the username
+    });
+  }
 });
 
 function fetchProfile() {
-    fetch('/get-user-profile', { credentials: 'include' })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('profilePicture').src = data.profilePicture || './default-profile.png'; // Fallback to a default image
-        document.getElementById('bio').textContent = data.bio || 'No bio set.';
-        // Include additional UI updates here for followers, following, etc.
-    })
-    .catch(error => console.error('Error:', error));
+  fetch('/get-user-profile', { credentials: 'include' })
+  .then(response => response.json())
+  .then(updatePageWithProfileData) // Make sure this is properly invoking your function
+  .catch(error => console.error('Error fetching profile:', error));
 }
+
 
 function searchUsers(username) {
   fetch(`/search-users?username=${encodeURIComponent(username)}`, { 
@@ -75,64 +90,70 @@ function searchUsers(username) {
 }
 
 
-// Add event listener for form submission
-document.getElementById('searchUserForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const username = document.getElementById('usernameSearch').value;
-  searchUsers(username); // Call the searchUsers function with the username
-});
-
-// Use separate functions for updating follower and following counts
-function updateFollowingCount(increment) {
-  const followingCountElement = document.getElementById('followingCount');
-  if (followingCountElement) {
-      let followingCount = parseInt(followingCountElement.innerText) || 0;
-      followingCount += increment;
-      followingCountElement.innerText = followingCount.toString();
-  } else {
-      console.error('Following count element not found.');
-  }
-}
-
 function followUser(userId) {
-  fetch(`/follow-user/${userId}`, {
-      method: 'POST',
-      credentials: 'include',
-  })
-  .then(response => {
-      if (!response.ok) {
-          throw new Error('Response not OK');
-      }
-      return response.json();
-  })
+  fetch(`/follow-user/${userId}`, { method: 'POST', credentials: 'include' })
+  .then(response => response.json())
   .then(data => {
-      console.log(data.message);
       if (data.message === 'Followed successfully') {
-          updateFollowingCount(1); // Update following count when you follow someone
+          updateFollowingCountDirectly(data.currentUserFollowingCount);
+          updateFollowerCountDirectly(data.targetUserFollowerCount);
+          // Dynamic button update
+          document.querySelectorAll(`button[data-user-id="${userId}"]`).forEach(btn => {
+              btn.textContent = 'Unfollow';
+              btn.onclick = () => unfollowUser(userId);
+          });
       } else {
-          console.log(data.message); // Handle other messages like "Already following"
+          console.log(data.message);
       }
   })
   .catch(error => console.error('Error following user:', error));
 }
 
 function unfollowUser(userId) {
-  fetch(`/unfollow-user/${userId}`, {
-      method: 'POST',
-      credentials: 'include',
-  })
-  .then(response => {
-      if (!response.ok) {
-          throw new Error('Response not OK');
-      }
-      return response.json();
-  })
+  fetch(`/unfollow-user/${userId}`, { method: 'POST', credentials: 'include' })
+  .then(response => response.json())
   .then(data => {
       if (data.message === 'Unfollowed successfully') {
-          updateFollowingCount(-1); // Decrement following count when you unfollow someone
+          updateFollowingCountDirectly(data.currentUserFollowingCount);
+          updateFollowerCountDirectly(data.targetUserFollowerCount);
+          // Dynamic button update
+          document.querySelectorAll(`button[data-user-id="${userId}"]`).forEach(btn => {
+              btn.textContent = 'Follow';
+              btn.onclick = () => followUser(userId);
+          });
       } else {
-          console.error(data.message); // Handle potential errors or other messages
+          console.error(data.message);
       }
   })
   .catch(error => console.error('Error unfollowing user:', error));
+}
+
+
+
+function updateFollowerCountDirectly(newCount) {
+  const followerCountElement = document.getElementById('followerCount');
+  if (followerCountElement) {
+    followerCountElement.textContent = `Followers: ${newCount}`;
+  }
+}
+
+function updateFollowingCountDirectly(newCount) {
+  const followingCountElement = document.getElementById('followingCount');
+  if (followingCountElement) {
+    followingCountElement.textContent = `Following: ${newCount}`;
+  }
+}
+
+
+
+function updatePageWithProfileData(data) {
+  const profilePicture = document.getElementById('profilePicture');
+  const bio = document.getElementById('bio');
+  const followingCountElement = document.getElementById('followingCount');
+  const followerCountElement = document.getElementById('followerCount');
+
+  if(profilePicture) profilePicture.src = data.profilePicture || './default-profile.png';
+  if(bio) bio.textContent = data.bio || 'No bio set.';
+  if(followingCountElement) followingCountElement.textContent = `Following: ${data.following ? data.following.length : 0}`;
+  if(followerCountElement) followerCountElement.textContent = `Followers: ${data.followers ? data.followers.length : 0}`;
 }

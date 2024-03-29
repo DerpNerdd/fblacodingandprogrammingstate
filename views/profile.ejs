@@ -13,22 +13,13 @@
     <p>Bio: <%= userProfile.bio %></p>
 
     <div>
-        <h2>Followers: <%= followers.length %></h2>
-        <ul>
-            <% followers.forEach(follower => { %>
-                <li><%= follower.username %></li>
-            <% }); %>
-        </ul>
+        <h2><span id="followerCount"><%= followers.length %></span></h2>
     </div>
-
+    
     <div>
-        <h2>Following: <%= following.length %></h2>
-        <ul>
-            <% following.forEach(followee => { %>
-                <li><%= followee.username %></li>
-            <% }); %>
-        </ul>
+        <h2><span id="followingCount"><%= following.length %></span></h2>
     </div>
+    
 
     <div>
         <h2>Pinned Repositories</h2>
@@ -40,10 +31,12 @@
     </div>
 
     <% if (canFollow) { %>
-        <button onclick="followUser('<%= userProfile._id %>')">Follow</button>
+        <button data-user-id="<%= userProfile._id %>" onclick="followUser('<%= userProfile._id %>')">Follow</button>
     <% } else { %>
-        <button onclick="unfollowUser('<%= userProfile._id %>')">Unfollow</button>
+        <button data-user-id="<%= userProfile._id %>" onclick="unfollowUser('<%= userProfile._id %>')">Unfollow</button>
     <% } %>
+    
+    
 
     <script src="/profile.js"></script>
 </body>

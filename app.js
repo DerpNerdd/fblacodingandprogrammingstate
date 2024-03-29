@@ -544,16 +544,23 @@ app.get('/get-user-profile', async (req, res) => {
   }
 
   try {
-    const user = await User.findById(req.user._id, 'username email profilePicture bio');
+    const user = await User.findById(req.user._id).populate('followers following', 'username').select('username email profilePicture bio followers following');
     if (!user) {
       return res.status(404).send('User not found');
     }
-    res.json(user);
+    // Convert followers and following to simple arrays of usernames or IDs
+    const modifiedUser = {
+      ...user.toObject(),
+      followers: user.followers.map(f => f.username), // Assuming you want usernames. Adjust as needed.
+      following: user.following.map(f => f.username),
+    };
+    res.json(modifiedUser);
   } catch (error) {
     console.error('Error fetching user profile:', error);
     res.status(500).send('Error fetching user profile');
   }
 });
+
 
 // Assuming a Repository schema exists similar to this
 const repositorySchema = new mongoose.Schema({
@@ -589,48 +596,72 @@ app.get('/search-users', async (req, res) => {
 });
 
 
-// Follow a user
+// Follow a user with duplicate check
 app.post('/follow-user/:userId', async (req, res) => {
   if (!req.isAuthenticated()) {
-      return res.status(403).send('Not authenticated');
+    return res.status(403).send('Not authenticated');
   }
+  const targetUserId = req.params.userId;
+  const currentUserId = req.user._id;
+
   try {
-      const userToFollow = await User.findById(req.params.userId);
-      const currentUser = await User.findById(req.user._id);
-      // Prevent duplicate follows
-      if (!currentUser.following.includes(req.params.userId)) {
-          currentUser.following.push(req.params.userId);
-          userToFollow.followers.push(req.user._id);
-          await currentUser.save();
-          await userToFollow.save();
-          res.json({ message: 'Followed successfully' });
-        } else {
-        res.status(400).json({ message: 'Already following' });
-      }
+    const targetUser = await User.findById(targetUserId);
+    const currentUser = await User.findById(currentUserId);
+
+    // Prevent duplication upon following
+    if (!currentUser.following.some(id => id.toString() === targetUserId)) {
+      currentUser.following.push(targetUserId);
+      targetUser.followers.push(currentUserId);
+
+      await currentUser.save();
+      await targetUser.save();
+
+      res.json({
+        message: 'Followed successfully',
+        currentUserFollowingCount: currentUser.following.length,
+        targetUserFollowerCount: targetUser.followers.length
+      });
+    } else {
+      res.status(400).send('Already following this user');
+    }
   } catch (error) {
-      console.error('Error following user:', error);
-      res.status(500).send('Error following user');
+    console.error('Error following user:', error);
+    res.status(500).send('Internal server error');
   }
 });
 
-// Unfollow a user
+// Unfollow a user with correct ID removal
 app.post('/unfollow-user/:userId', async (req, res) => {
   if (!req.isAuthenticated()) {
-      return res.status(403).send('Not authenticated');
+    return res.status(403).send('Not authenticated');
   }
+  const targetUserId = req.params.userId;
+  const currentUserId = req.user._id;
+
   try {
-      const userToUnfollow = await User.findById(req.params.userId);
-      const currentUser = await User.findById(req.user._id);
-      currentUser.following.pull(req.params.userId);
-      userToUnfollow.followers.pull(req.user._id);
-      await currentUser.save();
-      await userToUnfollow.save();
-      res.json({ message: 'Unfollowed successfully' });
-    } catch (error) {
-      console.error('Error unfollowing user:', error);
-      res.status(400).json({ message: 'Error unfollowing user' });
-    }
+    const targetUser = await User.findById(targetUserId);
+    const currentUser = await User.findById(currentUserId);
+
+    // Correctly remove the user ID upon unfollowing
+    currentUser.following = currentUser.following.filter(id => id.toString() !== targetUserId);
+    targetUser.followers = targetUser.followers.filter(id => id.toString() !== currentUserId);
+
+    await currentUser.save();
+    await targetUser.save();
+
+    res.json({
+      message: 'Unfollowed successfully',
+      currentUserFollowingCount: currentUser.following.length,
+      targetUserFollowerCount: targetUser.followers.length
+    });
+  } catch (error) {
+    console.error('Error unfollowing user:', error);
+    res.status(500).send('Internal server error');
+  }
 });
+
+
+
 app.get('/profile/:username', async (req, res) => {
   try {
     // Log the username for debugging
