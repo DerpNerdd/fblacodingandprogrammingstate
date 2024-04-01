@@ -22,8 +22,26 @@
                 <span class="hamburger-inner"></span>
             </span>
         </button>
-        <button id="theme-toggle" class="theme-toggle">Toggle Theme</button>
-        <!-- Rest of the header content -->
+        <img src="./Media/Global (1).png" alt="Company Logo" class="company-logo" />
+        <span class="dashboard-title">Dashboard</span>
+
+        <div id="profile-actions-container">
+            <form id="search-form" action="/search" method="GET">
+                <input type="search" id="search-input" name="query" placeholder="Search..." aria-label="Search through site content">
+                <button type="submit" id="search-button">Search</button>
+            </form>
+            <a href="/submit-data.html" class="submit-data-btn">
+                <svg viewBox="0 0 16 16" class="plus-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M8 4a.75.75 0 01.75.75v3h3a.75.75 0 010 1.5h-3v3a.75.75 0 01-1.5 0v-3h-3a.75.75 0 010-1.5h3v-3A.75.75 0 018 4z"/>
+                </svg>
+                <span>New</span>
+            </a>
+            <a href="/profiletest.html" class="user-profile">
+                <img src="" alt="Profile Picture" class="profile-pic" id="profile-pic">
+            </a>
+        </div>
+
+          </div>
     </header>
     <aside class="side-navbar">
         <button aria-label="Close navigation menu" id="close-nav" class="close-nav">&times;</button>

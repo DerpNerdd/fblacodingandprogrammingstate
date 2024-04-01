@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Partner Data</title>
+    <link rel="stylesheet" href="./CSS/viewsubmission.css">
+</head>
+<body>
+    <h1>Partner Information</h1>
+    <div>
+        <input type="text" id="searchInput" placeholder="Search...">
+    <select id="stateFilter">
+        <option value="">Select State</option>
+        <!-- States will be populated here -->
+      </select>
+      <select id="cityFilter">
+        <option value="">Select City</option>
+        <!-- Cities will be populated here based on selected state -->
+      </select>
+      
+    <select id="nameSort">
+      <option value="">Sort by Name</option>
+      <option value="asc">Name A-Z</option>
+      <option value="desc">Name Z-A</option>
+    </select>
+    <button onclick="applyFilters()">Apply Filters</button>
+    </div>
+  
+    <table id="data-table" border="1">
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <!-- Additional headers -->
+            <th>Actions</th>
+        </tr>
+        <% searchResults.forEach(function(result, index) { %>
+            <tr>
+                <td><%= index + 1 %></td>
+                <td><%= result.firstName %></td>
+                <td><%= result.lastName %></td>
+                <!-- Additional data cells -->
+                <td>
+                    <!-- Conditional rendering for actions based on ownership -->
+                    <% if(result.isOwner) { %>
+                        <button onclick="editItem('<%= result._id %>')">Edit</button>
+                        <button onclick="deleteItem('<%= result._id %>')">Delete</button>
+                    <% } %>
+                </td>
+            </tr>
+        <% }); %>
+    </table>
+    <script src="/view-data.js"></script>
+</body>
+</html>

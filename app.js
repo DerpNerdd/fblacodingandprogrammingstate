@@ -16,7 +16,6 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + '-' + file.originalname);
   }
 });
-
 const upload = multer({ storage: storage });
 
 // Initialize the express application here
@@ -44,16 +43,17 @@ const partnerSchema = new mongoose.Schema({
   orgState: String,
   resources: String,
   addInformation: String,
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Reference to the User model
-
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 
+
 const User = mongoose.model('User', userSchema);
+
 const Partner = mongoose.model('Partner', partnerSchema);
 
 
 
-// Now you can safely use 'app' for setting views and engine
+// Now you  cansafely use 'app' for setting views and engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -63,11 +63,19 @@ app.use(express.json());
 // Parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+console.log(path.join(__dirname, 'public/uploads'));
+
+
 
 // Connect to MongoDB
 mongoose.connect("mongodb+srv://DerpNerd:KingAlanSanchez2007@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority")
-  .then(() => console.log('MongoDB connected :D'))
-  .catch(err => console.error('MongoDB connection error:', err));
+.then(() => {
+  console.log('MongoDB connected');
+  Partner.init().then(() => {
+    console.log('Indexes have been initialized');
+  }).catch(err => console.error('Error initializing indexes:', err));
+}).catch(err => console.error('MongoDB connection error:', err));
 
 
 passport.use(new LocalStrategy((username, password, done) => {
@@ -634,7 +642,77 @@ app.get('/user/:username', async (req, res) => {
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Update email visibility
+app.get('/dashboard', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/login');
+  }
+  
+  // Assuming you have a method to find the user by ID
+  const user = await User.findById(req.user._id).lean();
+  
+  if (!user) {
+    return res.status(404).send('User not found');
+  }
+
+  // Render the dashboard with the user object
+  res.render('dashboard', { user });
+});
+
+app.get('/api/current-user', (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).send({ error: 'User is not authenticated' });
+  }
+  const profilePicturePath = req.user.profilePicture.startsWith('/uploads/')
+    ? req.user.profilePicture
+    : `/uploads/${req.user.profilePicture}`;
+  res.json({
+    username: req.user.username,
+    profilePicture: req.user.profilePicture ? profilePicturePath : '/path/to/default/image.jpg',
+  });
+});
+
+
+
+app.get('/api/search', async (req, res) => {
+  console.log("Search query received:", req.query.query);
+  const searchQuery = req.query.query; // Extract query from URL parameters
+  try {
+      // Perform the search operation. Assuming a simple text search for simplicity.
+      const searchResults = await Partner.find({
+          $text: { $search: searchQuery }
+      }).lean();
+
+      // Render the view-data.ejs template with the searchResults data
+      res.render('view-data', { searchResults: searchResults });
+  } catch (error) {
+      console.error('Search error:', error);
+      res.status(500).render('error', { error: error }); // Assume you have an error.ejs for error rendering
+  }
+});
+
+// New JSON search endpoint
+app.get('/api/current-user', (req, res) => {
+  if (!req.isAuthenticated()) {
+    // If the user is not authenticated, return an appropriate status and message
+    return res.status(401).json({ error: 'User is not authenticated' });
+  }
+
+  // Assuming the profilePicture field contains just the filename and not the full path
+  // Construct the full path for the profile picture
+  const profilePicturePath = req.user.profilePicture
+    ? `/uploads/${req.user.profilePicture}`
+    : '/path/to/default/image.jpg'; // Provide a default image path if not set
+
+  // Return the user data as JSON
+  res.json({
+    username: req.user.username,
+    profilePicture: profilePicturePath,
+  });
+});
+
+
+
+
 
 // Start the server
 const port = process.env.PORT || 3000;
