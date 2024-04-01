@@ -1,159 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
-  fetchProfile(); // Fetch profile data on page load
+  fetchProfile(); // Fetch and display profile data on page load
 
-  const uploadForm = document.getElementById('uploadForm');
-  if (uploadForm) {
-    uploadForm.addEventListener('submit', function(e) {
+  document.getElementById('editProfileBtn').addEventListener('click', () => {
+      const editSection = document.getElementById('editProfileSection');
+      editSection.style.display = editSection.style.display === 'block' ? 'none' : 'block';
+  }); // Added missing closing bracket here
+
+  // Event listener for profile picture upload
+  document.getElementById('uploadForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const formData = new FormData(this); // 'this' refers to the form
+      const formData = new FormData(this);
       fetch('/upload-profile-picture', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
+          method: 'POST',
+          body: formData,
+          credentials: 'include',
       })
       .then(response => response.json())
       .then(data => {
-        console.log('Upload success:', data);
-        fetchProfile(); // Refresh profile data
-      })
-      .catch(error => console.error('Upload error:', error));
-    });
-  }
-
-  const editBioBtn = document.getElementById('editBioBtn');
-  if (editBioBtn) {
-    editBioBtn.addEventListener('click', () => {
-      document.getElementById('editBioForm').style.display = 'block';
-    });
-  }
-
-  const editBioForm = document.getElementById('editBioForm');
-  if (editBioForm) {
-    editBioForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const bio = document.getElementById('bioText').value;
-
-      fetch('/update-bio', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ bio }),
-        credentials: 'include',
-      })
-      .then(() => {
-        fetchProfile(); // Refresh profile info after bio update
-        document.getElementById('editBioForm').style.display = 'none';
+          alert('Profile picture updated successfully.');
+          fetchProfile(); // Refresh profile data
       })
       .catch(error => console.error('Error:', error));
-    });
-  }
+  });
 
-  const searchUserForm = document.getElementById('searchUserForm');
-  if (searchUserForm) {
-    searchUserForm.addEventListener('submit', function(e) {
+  // Event listener for bio update
+  document.getElementById('editBioForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const username = document.getElementById('usernameSearch').value;
-      searchUsers(username); // Call the searchUsers function with the username
-    });
-  }
+      const bio = document.getElementById('bioText').value;
+      fetch('/update-bio', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bio }),
+          credentials: 'include',
+      })
+      .then(response => response.json())
+      .then(data => {
+          alert('Bio updated successfully.');
+          fetchProfile(); // Refresh profile data
+      })
+      .catch(error => console.error('Error:', error));
+  });
 });
 
 function fetchProfile() {
   fetch('/get-user-profile', { credentials: 'include' })
   .then(response => response.json())
-  .then(updatePageWithProfileData) // Make sure this is properly invoking your function
+  .then(data => {
+      const profilePicture = document.getElementById('profilePicture');
+      const bio = document.getElementById('bio');
+      const email = document.getElementById('email');
+      const userName = document.getElementById('userName');
+
+      profilePicture.src = data.profilePicture || './default-profile.png';
+      bio.textContent = data.bio || 'No bio set.';
+      email.textContent = `Email: ${data.email}`;
+      userName.textContent = data.username; // Display actual username
+  })
   .catch(error => console.error('Error fetching profile:', error));
 }
 
+document.querySelector('.file-input-button').addEventListener('click', function() {
+  document.getElementById('profileImage').click();
+});
 
-function searchUsers(username) {
-  fetch(`/search-users?username=${encodeURIComponent(username)}`, { 
-    method: 'GET',
-    credentials: 'include', // For sending cookies with the request
-  })
-  .then(response => response.json())
-  .then(data => {
-    const resultsContainer = document.getElementById('searchResults');
-    resultsContainer.innerHTML = ''; // Clear previous results
-
-    data.forEach(user => {
-      const userElement = document.createElement('div');
-      userElement.innerHTML = `
-        <span>${user.username}</span>
-        <button onclick="followUser('${user._id}')">Follow</button>
-        <button onclick="unfollowUser('${user._id}')">Unfollow</button>
-        <a href="/profile/${user.username}">View Profile</a>
-      `;
-      resultsContainer.appendChild(userElement);
-    });
-  })
-  .catch(error => console.error('Error fetching search results:', error));
-}
-
-
-function followUser(userId) {
-  fetch(`/follow-user/${userId}`, { method: 'POST', credentials: 'include' })
-  .then(response => response.json())
-  .then(data => {
-      if (data.message === 'Followed successfully') {
-          updateFollowingCountDirectly(data.currentUserFollowingCount);
-          updateFollowerCountDirectly(data.targetUserFollowerCount);
-          // Dynamic button update
-          document.querySelectorAll(`button[data-user-id="${userId}"]`).forEach(btn => {
-              btn.textContent = 'Unfollow';
-              btn.onclick = () => unfollowUser(userId);
-          });
-      } else {
-          console.log(data.message);
-      }
-  })
-  .catch(error => console.error('Error following user:', error));
-}
-
-function unfollowUser(userId) {
-  fetch(`/unfollow-user/${userId}`, { method: 'POST', credentials: 'include' })
-  .then(response => response.json())
-  .then(data => {
-      if (data.message === 'Unfollowed successfully') {
-          updateFollowingCountDirectly(data.currentUserFollowingCount);
-          updateFollowerCountDirectly(data.targetUserFollowerCount);
-          // Dynamic button update
-          document.querySelectorAll(`button[data-user-id="${userId}"]`).forEach(btn => {
-              btn.textContent = 'Follow';
-              btn.onclick = () => followUser(userId);
-          });
-      } else {
-          console.error(data.message);
-      }
-  })
-  .catch(error => console.error('Error unfollowing user:', error));
-}
-
-
-
-function updateFollowerCountDirectly(newCount) {
-  const followerCountElement = document.getElementById('followerCount');
-  if (followerCountElement) {
-    followerCountElement.textContent = `Followers: ${newCount}`;
-  }
-}
-
-function updateFollowingCountDirectly(newCount) {
-  const followingCountElement = document.getElementById('followingCount');
-  if (followingCountElement) {
-    followingCountElement.textContent = `Following: ${newCount}`;
-  }
-}
-
-
-
-function updatePageWithProfileData(data) {
-  const profilePicture = document.getElementById('profilePicture');
-  const bio = document.getElementById('bio');
-  const followingCountElement = document.getElementById('followingCount');
-  const followerCountElement = document.getElementById('followerCount');
-
-  if(profilePicture) profilePicture.src = data.profilePicture || './default-profile.png';
-  if(bio) bio.textContent = data.bio || 'No bio set.';
-  if(followingCountElement) followingCountElement.textContent = `Following: ${data.following ? data.following.length : 0}`;
-  if(followerCountElement) followerCountElement.textContent = `Followers: ${data.followers ? data.followers.length : 0}`;
-}
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('editProfileBtn').addEventListener('click', () => {
+    const section = document.getElementById('editProfileSection');
+    section.classList.toggle('open');
+  });
+});

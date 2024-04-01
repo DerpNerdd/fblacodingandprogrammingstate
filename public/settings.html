@@ -1,32 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="author" content="Alan Sanchez, Daniel Freeman, Oliver Kuopus">
+    <meta name="description" content="Global is the Number One most trusted security site. We provide security for you and your clients information.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:image" content="">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
     <meta charset="UTF-8">
     <title>Settings</title>
+    <link rel="stylesheet" href="./CSS/settings.css">
+    <link rel="shortcut icon" href="./Media/favicon.ico" type="image/x-icon">
+
 </head>
 <body>
-    <h1>Settings</h1>
-    <form id="changeEmailForm">
-        <label for="newEmail">Change Email:</label>
-        <input type="email" id="newEmail" name="newEmail">
-        <input type="submit" value="Update Email">
-    </form>
-    
-    <form id="changeUsernameForm">
-        <label for="newUsername">Change Username:</label>
-        <input type="text" id="newUsername" name="newUsername">
-        <input type="submit" value="Update Username">
-    </form>
-    
-    <form id="changePasswordForm">
-        <label for="currentPassword">Current Password:</label>
-        <input type="password" id="currentPassword" name="currentPassword">
-        <label for="newPassword">New Password:</label>
-        <input type="password" id="newPassword" name="newPassword">
-        <input type="submit" value="Update Password">
-    </form>
-    
-    <button id="deleteAccountBtn">Delete Account</button>
+    <div class="container">
+        <h1>Settings</h1>
+        <form id="changeEmailForm">
+            <label for="newEmail">Change Email:</label>
+            <input type="email" id="newEmail" name="newEmail">
+            <input type="submit" value="Update Email">
+        </form>
+        
+        <form id="changeUsernameForm">
+            <label for="newUsername">Change Username:</label>
+            <input type="text" id="newUsername" name="newUsername">
+            <input type="submit" value="Update Username">
+        </form>
+        
+        <form id="changePasswordForm">
+            <label for="currentPassword">Current Password:</label>
+            <input type="password" id="currentPassword" name="currentPassword">
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="newPassword">
+            <input type="submit" value="Update Password">
+        </form>
+        
+        <button id="deleteAccountBtn">Delete Account</button>
+        <button id="backToDashboardBtn" onclick="window.location.href='dashboard.html';">Back to Dashboard</button>
+    </div>
     
     <script src="settings.js"></script>
 </body>

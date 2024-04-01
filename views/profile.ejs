@@ -12,31 +12,8 @@
     <p>Email: <%= userProfile.email %></p> <!-- Consider privacy before displaying email -->
     <p>Bio: <%= userProfile.bio %></p>
 
-    <div>
-        <h2><span id="followerCount"><%= followers.length %></span></h2>
-    </div>
-    
-    <div>
-        <h2><span id="followingCount"><%= following.length %></span></h2>
-    </div>
     
 
-    <div>
-        <h2>Pinned Repositories</h2>
-        <ul>
-            <% pinnedRepositories.forEach(repo => { %>
-                <li><%= repo.name %>: <%= repo.description %></li>
-            <% }); %>
-        </ul>
-    </div>
-
-    <% if (canFollow) { %>
-        <button data-user-id="<%= userProfile._id %>" onclick="followUser('<%= userProfile._id %>')">Follow</button>
-    <% } else { %>
-        <button data-user-id="<%= userProfile._id %>" onclick="unfollowUser('<%= userProfile._id %>')">Unfollow</button>
-    <% } %>
-    
-    
 
     <script src="/profile.js"></script>
 </body>

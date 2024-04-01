@@ -59,3 +59,4 @@ function sendRequest(url, data, method = 'PUT') {
         alert('Operation failed. Please try again.');
     });
 }
+

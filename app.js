@@ -29,9 +29,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   profilePicture: { type: String, default: '' }, // URL to the image
   bio: { type: String, default: '' },
-  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  pinnedRepositories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Repository' }]
+
 });
 
 // Define partner schema and model
@@ -47,6 +45,7 @@ const partnerSchema = new mongoose.Schema({
   resources: String,
   addInformation: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Reference to the User model
+
 });
 
 const User = mongoose.model('User', userSchema);
@@ -498,7 +497,6 @@ app.delete('/delete-account', async (req, res) => {
   }
 });
 
-// Route to upload profile picture
 app.post('/upload-profile-picture', upload.single('profileImage'), async (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(403).send('Not authenticated');
@@ -509,7 +507,7 @@ app.post('/upload-profile-picture', upload.single('profileImage'), async (req, r
 
   try {
     const user = await User.findById(req.user._id);
-    user.profilePicture = `/uploads/${req.file.filename}`; // Adjust the path as needed
+    user.profilePicture = `/uploads/${req.file.filename}`;
     await user.save();
     res.send({ message: 'Profile picture updated successfully.' });
   } catch (error) {
@@ -544,22 +542,17 @@ app.get('/get-user-profile', async (req, res) => {
   }
 
   try {
-    const user = await User.findById(req.user._id).populate('followers following', 'username').select('username email profilePicture bio followers following');
+    const user = await User.findById(req.user._id).select('username email profilePicture bio');
     if (!user) {
       return res.status(404).send('User not found');
     }
-    // Convert followers and following to simple arrays of usernames or IDs
-    const modifiedUser = {
-      ...user.toObject(),
-      followers: user.followers.map(f => f.username), // Assuming you want usernames. Adjust as needed.
-      following: user.following.map(f => f.username),
-    };
-    res.json(modifiedUser);
+    res.json(user);
   } catch (error) {
     console.error('Error fetching user profile:', error);
     res.status(500).send('Error fetching user profile');
   }
 });
+
 
 
 // Assuming a Repository schema exists similar to this
@@ -574,92 +567,8 @@ const Repository = mongoose.model('Repository', repositorySchema);
 
 // Update the User schema
 userSchema.add({
-  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   pinnedRepositories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Repository' }]
 });
-
-// Search users
-app.get('/search-users', async (req, res) => {
-  const { username } = req.query;
-  if (!req.isAuthenticated()) {
-      return res.status(403).json({ error: 'Not authenticated' });
-  }
-  try {
-      const users = await User.find({ username: new RegExp(username, 'i') }, 'username')
-                              .lean();
-      res.json(users);
-  } catch (error) {
-      console.error('Error searching users:', error);
-      res.status(500).json({ error: 'Error searching users' });
-  }
-});
-
-
-// Follow a user with duplicate check
-app.post('/follow-user/:userId', async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.status(403).send('Not authenticated');
-  }
-  const targetUserId = req.params.userId;
-  const currentUserId = req.user._id;
-
-  try {
-    const targetUser = await User.findById(targetUserId);
-    const currentUser = await User.findById(currentUserId);
-
-    // Prevent duplication upon following
-    if (!currentUser.following.some(id => id.toString() === targetUserId)) {
-      currentUser.following.push(targetUserId);
-      targetUser.followers.push(currentUserId);
-
-      await currentUser.save();
-      await targetUser.save();
-
-      res.json({
-        message: 'Followed successfully',
-        currentUserFollowingCount: currentUser.following.length,
-        targetUserFollowerCount: targetUser.followers.length
-      });
-    } else {
-      res.status(400).send('Already following this user');
-    }
-  } catch (error) {
-    console.error('Error following user:', error);
-    res.status(500).send('Internal server error');
-  }
-});
-
-// Unfollow a user with correct ID removal
-app.post('/unfollow-user/:userId', async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.status(403).send('Not authenticated');
-  }
-  const targetUserId = req.params.userId;
-  const currentUserId = req.user._id;
-
-  try {
-    const targetUser = await User.findById(targetUserId);
-    const currentUser = await User.findById(currentUserId);
-
-    // Correctly remove the user ID upon unfollowing
-    currentUser.following = currentUser.following.filter(id => id.toString() !== targetUserId);
-    targetUser.followers = targetUser.followers.filter(id => id.toString() !== currentUserId);
-
-    await currentUser.save();
-    await targetUser.save();
-
-    res.json({
-      message: 'Unfollowed successfully',
-      currentUserFollowingCount: currentUser.following.length,
-      targetUserFollowerCount: targetUser.followers.length
-    });
-  } catch (error) {
-    console.error('Error unfollowing user:', error);
-    res.status(500).send('Internal server error');
-  }
-});
-
 
 
 app.get('/profile/:username', async (req, res) => {
@@ -691,25 +600,6 @@ app.get('/profile/:username', async (req, res) => {
   }
 });
 
-
-
-async function getFollowers(userId) {
-  return User.find({ followers: userId }).select('username').lean();
-}
-
-async function getFollowing(userId) {
-  return User.find({ following: userId }).select('username').lean();
-}
-
-async function getPinnedRepositories(userId) {
-  return Repository.find({ owner: userId }).lean(); // Adjust based on your schema
-}
-
-async function canCurrentUserFollow(currentUserId, profileUserId) {
-  if (String(currentUserId) === String(profileUserId)) return false; // Prevent self-follow
-  const currentUser = await User.findById(currentUserId);
-  return !currentUser.following.map(id => id.toString()).includes(String(profileUserId));
-}
 
 
 app.get('/user/:username', async (req, res) => {
@@ -744,9 +634,7 @@ app.get('/user/:username', async (req, res) => {
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
-
+// Update email visibility
 
 // Start the server
 const port = process.env.PORT || 3000;

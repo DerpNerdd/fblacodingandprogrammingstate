@@ -2,39 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
+    <link rel="stylesheet" href="./CSS/profile.css">
 </head>
-<body>
-    <h1>Profile</h1>
-    <div>
-        <img id="profilePicture" src="" alt="Profile Picture" style="width: 100px; height: 100px; border-radius: 50%;">
-    </div>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" id="profileImage" name="profileImage">
-        <input type="submit" value="Upload Image">
-    </form>
-    <p id="bio"></p>
-    <button id="editBioBtn">Edit Bio</button>
-    <form id="editBioForm" style="display:none;">
-        <textarea id="bioText" name="bioText"></textarea>
-        <input type="submit" value="Save Bio">
-    </form>
-
-<!-- profiletest.html/profile.ejs -->
-<div id="followerCount">Followers: 0</div>
-<div id="followingCount">Following: 0</div>
-
-    
-    <div id="pinnedRepositories">Pinned Repositories: None</div>
-
-    <!-- Search bar for usernames -->
-<form id="searchUserForm">
-    <input type="text" id="usernameSearch" placeholder="Search for a username...">
-    <input type="submit" value="Search">
-</form>
-
-<!-- Results area -->
-<div id="searchResults"></div>
+<body class="bg-black font-sans leading-normal tracking-normal">
+    <main class="profile-container">
+        <section class="profile-photo-section">
+            <div class="profile-photo-wrapper">
+              <div class="profile-photo">
+                <img id="profilePicture" src="" alt="Profile Picture">
+              </div>
+            </div>
+        </section>
+        <section class="user-info-section">
+            <h1 id="userName">Username</h1>
+            <p id="bio">Bio goes here...</p>
+            <p id="email">Email: user@example.com</p>
+            <button id="editProfileBtn" type="button">Edit Profile</button>
+            <div id="editProfileSection" style="display:none;">
+                <form id="editBioForm">
+                    <label for="bioText">Bio:</label>
+                    <textarea id="bioText" name="bioText"></textarea>
+                    <input type="submit" value="Save Bio">
+                </form>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <label for="profileImage" class="file-input-button">Choose File</label>
+                    <input type="file" id="profileImage" name="profileImage" style="display:none;">
+                    <input type="submit" value="Upload Image">
+                </form>
+            </div>
+        </section>
+    </main>
 
 
     <script src="./profile.js"></script>

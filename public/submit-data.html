@@ -3,64 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Form</title>
-    
+    <title>Submission Form</title>
     <meta name="author" content="Alan Sanchez, Daniel Freeman, Oliver Kuopus">
     <meta name="description" content="Global is the Number One most trusted security site. We provide security for you and your clients information.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta property="og:image" content="">
-    <meta property="og:title" content="">
-    <meta property="og:description" content="">
+    <link rel="stylesheet" href="./CSS/submission.css">
 </head>
 <body>
-    <h1>Partner Information</h1>
-    <form id="partnerForm">
-        <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstName"><br><br>
-        
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName"><br><br>
-       
-        <label for="contactEmail">Contact Email:</label>
-        <input type="email" id="contactEmail" name="contactEmail"><br><br>
-        
-        <label for="phoneNumber">Contact Number:</label>
-        <input type="text" id="phoneNumber" name="phoneNumber"><br><br>
-        
-        <label for="orgName">Organization Name:</label>
-        <input type="text" id="orgName" name="orgName"><br><br>
-        
-        <label for="orgAddress">Organization Address:</label>
-        <input type="text" id="orgAddress" name="orgAddress"><br><br>
-        
-        <label for="orgCity">City of Business:</label>
-        <input type="text" id="orgCity" name="orgCity"><br><br>
-        
-        <label for="orgState">State of Business:</label>
-        <input type="text" id="orgState" name="orgState"><br><br>
-        
-        <label for="resources">Resources Available:</label>
-        <input type="text" id="resources" name="resources"><br><br>
-        
-        <label for="addInformation">Additional Information:</label>
-        <input type="text" id="addInformation" name="addInformation"><br><br>
+    <main class="container">
+        <h1>Partner Information</h1>
+        <form id="partnerForm" class="grid">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName"><br><br>
+            
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName"><br><br>
+           
+            <label for="contactEmail">Contact Email:</label>
+            <input type="email" id="contactEmail" name="contactEmail"><br><br>
+            
+            <label for="phoneNumber">Contact Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber"><br><br>
+            
+            <label for="orgName">Organization Name:</label>
+            <input type="text" id="orgName" name="orgName"><br><br>
+            
+            <label for="orgAddress">Organization Address:</label>
+            <input type="text" id="orgAddress" name="orgAddress"><br><br>
+            
+            <label for="orgCity">City of Business:</label>
+            <input type="text" id="orgCity" name="orgCity"><br><br>
+            
+            <label for="orgState">State of Business:</label>
+            <input type="text" id="orgState" name="orgState"><br><br>
+            
+            <label for="resources">Resources Available:</label>
+            <input type="text" id="resources" name="resources"><br><br>
+            
+            <label for="addInformation">Additional Information:</label>
+            <input type="text" id="addInformation" name="addInformation"><br><br>
 
-        <input type="submit" value="Submit">
-    </form>
-
-    <button onclick="window.location.href='view-data.html'">View Submitted Data</button>
-    <button onclick="window.location.href='index.html'">Home Test Page</button>
-    <button onclick="window.location.href='settings.html'">Settings</button>
-    <button onclick="window.location.href='profiletest.html'">Profile</button>
+            <input type="submit" value="Submit" class="button primary">
+        </form>
+    </main>
 
     <script src="./submit-data.js"></script>
-    
-    <div id="user-info"></div>
-    <button id="logout-btn" onclick="logout()" style="display:none;">Logout</button>
-    <button id="login-btn" onclick="window.location.href='/login'" style="display:none;">Login</button>
-    <button id="register-btn" onclick="window.location.href='/register'" style="display:block;">Register</button>
-    
 
 </body>
 </html>
