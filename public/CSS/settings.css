@@ -1,76 +1,68 @@
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    color: #c9d1d9;
-    background-color: #0d1117;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
-  
-  .container {
-    width: 100%;
-    max-width: 600px;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  h1 {
-    color: #c9d1d9;
-    text-align: center;
-  }
-  
-  form {
-    margin-bottom: 20px;
-  }
-  form label {
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-  form input[type=email],
-  form input[type=text],
-  form input[type=password] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 1rem;
-    border: 1px solid #30363d;
-    border-radius: 5px;
-    background-color: #161b22;
-    color: #c9d1d9;
-    box-sizing: border-box;
-  }
-  form input[type=submit] {
-    width: 100%;
-    background-color: #0366d6;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 0;
-    cursor: pointer;
-  }
-  form input[type=submit]:hover {
-    background-color: #024ea4;
-  }
-  
-  #deleteAccountBtn, #backToDashboardBtn {
-    width: 100%;
-    background-color: #d73a49;
-    color: white;
-    padding: 10px 0;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  #deleteAccountBtn:hover, #backToDashboardBtn:hover {
-    background-color: #b92534;
-  }
-  
-  #backToDashboardBtn {
-    background-color: #2ea043;
-  }
-  #backToDashboardBtn:hover {
-    background-color: #237832;
-  }
+/* Settings-specific styles should be namespaced to not conflict with the dashboard */
+.settings-container {
+  max-width: 600px;
+  margin: 0 auto; /* Center the settings container */
+  padding: 20px;
+}
+
+.settings-container h1 {
+  color: #c9d1d9;
+  text-align: center;
+}
+
+.settings-form {
+  margin-bottom: 20px;
+}
+
+.settings-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.settings-form input[type=email],
+.settings-form input[type=text],
+.settings-form input[type=password] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid #30363d;
+  background-color: #161b22;
+  color: #c9d1d9;
+}
+
+.settings-form input[type=submit] {
+  width: 100%;
+  background-color: #0366d6;
+  color: white;
+  padding: 10px 0;
+  border-radius: 5px;
+}
+
+.settings-form input[type=submit]:hover {
+  background-color: #024ea4;
+}
+
+.settings-action-button {
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 5px;
+  margin-top: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+.settings-action-button.delete-account {
+  background-color: #d73a49;
+}
+
+.settings-action-button.delete-account:hover {
+  background-color: #b92534;
+}
+
+.settings-action-button.back-dashboard {
+  background-color: #2ea043;
+}
+
+.settings-action-button.back-dashboard:hover {
+  background-color: #237832;
+}

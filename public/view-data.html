@@ -12,9 +12,82 @@
     <meta property="og:image" content="">
     <meta property="og:title" content="">
     <meta property="og:description" content="">
+    <link rel="stylesheet" href="./CSS/dashboard.css">
     <link rel="stylesheet" href="./CSS/viewsubmission.css">
 </head>
-<body>
+
+<body class="dark-theme">
+  <header class="top-navbar">
+      <!-- Hamburger menu button -->
+      <button aria-label="Open navigation menu" id="menu-toggle" class="hamburger" type="button">
+          <span class="hamburger-box">
+              <span class="hamburger-inner"></span>
+          </span>
+      </button>
+      <img src="./Media/Global (1).png" alt="Company Logo" class="company-logo" />
+      <span class="dashboard-title">View Submissions</span>
+
+      <div id="profile-actions-container">
+          <form id="search-form" action="/search" method="GET">
+              <input type="search" id="search-input" name="query" placeholder="Search..." aria-label="Search through site content">
+              <button type="submit" id="search-button" onclick="window.location.href='view-data.html'">Search</button>
+          </form>
+          <a href="/submit-data.html" class="submit-data-btn">
+              <svg viewBox="0 0 16 16" class="plus-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M8 4a.75.75 0 01.75.75v3h3a.75.75 0 010 1.5h-3v3a.75.75 0 01-1.5 0v-3h-3a.75.75 0 010-1.5h3v-3A.75.75 0 018 4z"/>
+              </svg>
+              <span>New</span>
+          </a>
+          <a href="/profile.html" class="user-profile">
+            <img src="" alt="Profile Picture" class="profile-pic" id="profile-pic">
+        </a>
+      </div>
+
+        </div>
+  </header>
+  <aside class="side-navbar">
+      <button aria-label="Close navigation menu" id="close-nav" class="close-nav">&times;</button>
+      <img src="./Media/Global (1).png" alt="Company Logo" class="side-navbar-logo" />
+      <!-- Side navigation content -->
+      <nav>
+          <a href="dashboard.html" class="nav-link home-link">
+              <img src="./Media/homeicon.png" alt="Home" class="nav-icon" />
+              <span>Home</span>
+          </a>
+          <a href="submit-data.html" class="nav-link create-link">
+              <img src="./Media/uploadicon.png" alt="Create" class="nav-icon" />
+              <span>Create</span>
+          </a>
+          <a href="view-data.html" class="nav-link create-link">
+              <img src="./Media/viewicon.png" alt="View" class="nav-icon" />
+              <span>View</span>
+          </a>
+          <a href="settings.html" class="nav-link create-link">
+              <img src="./Media/settingsicon.png" alt="Settings" class="nav-icon" />
+              <span>Settings</span>
+          </a>
+          <a href="profile.html" class="nav-link create-link">
+            <img src="./Media/profileicon.png" alt="Profile" class="nav-icon" />
+            <span>Profile</span>
+        </a>
+      </nav>
+      <footer class="side-navbar-footer">
+          <div class="side-navbar-footer-content">
+            <p>&copy; 2024 Global, Inc. <span class="footer-links">
+              <a href="#">About</a> |
+              <a href="#">Blog</a> |
+              <a href="#">Terms</a> |
+              <a href="#">Privacy</a> |
+              <a href="#">Security</a> |
+              <a href="#">Status</a>
+            </span></p>
+          </div>
+        </footer>
+        
+
+
+  </aside>
+  <main class="dashboard-content">
     <h1>Partner Information</h1>
     <!-- Filters -->
 <div>
@@ -53,7 +126,11 @@
     </tr>
 </table>
 <button onclick="window.location.href='submit-data.html'">Go back to form</button>
-<script src="view-data.js"></script>
+  </main>
 
+  <script src="view-data.js"></script>
+  <script src="./dashboard.js"></script>
 </body>
+
 </html>
+

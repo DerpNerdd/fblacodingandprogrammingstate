@@ -1,266 +1,95 @@
 :root {
-    --bg-color: #0d1117; /* Dark gray background */
-    --text-color: #c9d1d9;
-    --primary-color: #58a6ff;
-    --input-bg: #0d1117;
-    --input-border: #30363d;
-    --input-text: #c9d1d9;
-    --profile-bg: #161b22;
-    --background-gradient-start: rgba(159, 90, 253, 0.01);
-    --background-gradient-end: rgba(11, 127, 171, 0.01);
-    --border-gradient-start: rgba(255,126,103, 1); /* Increased opacity for better visibility */
-    --border-gradient-end: rgba(88,166,255, 1); /* Increased opacity for better visibility */
-    --button-bg: #6f42c1;
-    --button-hover-bg: #5936a2;
-    --input-focus-border: #ff758c; /* Color for input focus */
-    --font-primary: "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    --font-secondary: Georgia, "Times New Roman", Times, serif; /* A more distinct, elegant font for certain texts */
-    
+  --bg-color: #0d1117; /* Dark gray background */
+  --text-color: #c9d1d9; /* Lighter text for readability against dark background */
+  --primary-color: #58a6ff; /* Used for links and buttons */
+  --input-bg: #0d1117; /* Input field background, same as page background for a cohesive look */
+  --input-border: #30363d; /* Border color for input fields to stand out slightly */
+  --input-text: #c9d1d9; /* Color of text inside input fields */
+  --profile-bg: #161b22; /* Background color for profile card */
+  --background-gradient-start: rgba(159, 90, 253, 0.1); /* Start color for background gradient */
+  --background-gradient-end: rgba(11, 127, 171, 0.1); /* End color for background gradient */
+  --border-gradient-start: rgba(255,126,103, 1); /* Start color for border gradient around profile photo */
+  --border-gradient-end: rgba(88,166,255, 1); /* End color for border gradient */
+  --button-bg: #6f42c1; /* Background color for buttons */
+  --button-hover-bg: #5936a2; /* Background color for buttons on hover */
+  --input-focus-border: #ff758c; /* Border color for input fields when focused */
+  --font-primary: "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; /* Primary font */
+  --font-secondary: Georgia, "Times New Roman", Times, serif; /* Secondary font for a more distinct, elegant look */
 }
 
 body {
-    background: linear-gradient(to right, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%), var(--bg-color);
-    color: var(--text-color);
-    font-family: var(--font-primary);
-    margin: 0;
-    overflow: hidden; /* Prevent scrolling */
-    display: flex;
-    justify-content: center;
-    align-items: center; /* Centers content vertically */
-    min-height: 100vh;
-    position: relative; /* For absolute positioning of children */
+  background: linear-gradient(to right, var(--background-gradient-start), var(--background-gradient-end)), var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-primary);
+  margin: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
 }
 
 .profile-container {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 2rem;
-    max-width: 1200px;
-    transform: translateY(-10%); /* Move up by 10% of the viewport height */
-    width: 100%;
-}
-  
-  .profile-photo-section {
-    position: relative;
-    width: 320px; /* Image width + border */
-    height: 320px; /* Image height + border */
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .profile-photo-wrapper {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto; /* Center the wrapper if the layout changes */
+  display: block; /* Use block to fit the content area of the dashboard */
+  max-width: none; /* Remove the max-width */
+  margin: 0; /* Remove margin */
+  padding: 1rem; /* Add some padding if necessary */
 }
 
-.profile-photo-wrapper::before {
-    content: '';
-    position: absolute;
-    width: calc(100% + 10px); /* Adjust based on border thickness */
-    height: calc(100% + 10px);
-    border: 5px solid transparent; /* Adjust thickness */
-    border-radius: 50%;
-    background-image: linear-gradient(var(--bg-color), var(--bg-color)), linear-gradient(45deg, var(--border-gradient-start), var(--border-gradient-end));
-    background-origin: border-box;
-    background-clip: content-box, border-box;
-    animation: rotate-border 5s linear infinite;
-    z-index: 0; /* Ensuring it's above the background but below the image */
+/* Adjust the profile sections to be more responsive within the dashboard */
+.profile-photo-section,
+.user-info-section {
+  width: 100%; /* Full width to fit the container */
+  margin-bottom: 1rem; /* Space between the sections */
 }
-  
-  @keyframes rotate-border {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
-  .profile-photo {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    overflow: hidden;
-  }
-  
-  .profile-photo img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-  
-  .user-info-section {
-    background-color: var(--profile-bg);
-    padding: 2rem;
-    border-radius: 10px;
-    color: var(--text-color);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-family: var(--font-secondary); /* Use the secondary, more elegant font */
-    color: var(--text-color);
+
+/* Remove absolute positioning and transforms that might conflict with the layout */
+.profile-photo-section {
+  position: static; /* Change if it was absolute before */
+}
+
+.profile-photo-wrapper,
+.profile-photo,
+.profile-photo img {
+  /* Adjust dimensions to fit within the new structure */
+  width: 100px; /* Example size, adjust as needed */
+  height: 100px; /* Example size, adjust as needed */
+}
+
+.user-info-section {
+  /* Adjust styling to fit the dashboard content area */
+  padding: 1rem;
+  text-align: left; /* Align text to the left, or center if preferred */
 }
 
 #editProfileSection button,
 #editProfileSection .file-input-button {
-    background-color: var(--button-bg);
-    color: white;
-    padding: 8px 16px;
-    font-size: 14px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px; /* Ensures spacing between buttons and other elements */
+  background-color: var(--button-bg);
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: auto; /* Allows button to size with content */
+  display: block; /* Block display for full-width effect */
 }
 
-#editProfileSection button:hover,
-#editProfileSection .file-input-button:hover {
-    background-color: var(--button-hover-bg);
-}
+/* Continue with the rest of your old CSS for the form-group, input, button, and hover effects. */
 
-.form-group input[type="text"],
-.form-group textarea,
-#editProfileSection input[type="submit"] {
-    background-color: var(--button-bg);
-    color: white;
-    padding: 8px 16px;
-    font-size: 14px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px; /* Ensures spacing between buttons and other elements */
-}
-  
-  h1#userName {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+@media (max-width: 768px) {
+  .profile-container {
+      gap: 15px;
   }
-  
-  p#bio, p#email {
-    margin-bottom: 0.5rem;
+
+  .profile-photo-section, .user-info-section {
+      width: 100%; /* Full width on smaller screens */
   }
-  
-  button#editProfileBtn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 1rem;
-    align-self: start;
-    transition: background-color 0.3s;
+
+  .profile-photo-wrapper {
+      width: 250px; /* Smaller profile photo on small screens */
+      height: 250px;
   }
-  
-  button#editProfileBtn:hover {
-    background-color: darken(var(--primary-color), 10%);
-  }
-  
-  #editProfileSection {
-    border: 1px solid var(--input-border); /* Subtle border for definition */
-    background: var(--profile-bg); /* Consistent background with the rest of the profile */
-    border-radius: 12px; /* Rounded corners for a softer look */
-    padding: 20px; /* Adequate padding for content */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Spacing between form elements */
-    transition: all 0.3s ease-in-out; /* Smooth transition for interactions */
-}
-
-#editProfileSection button,
-#editProfileSection .file-input-button,
-.form-group input[type="text"],
-.form-group textarea,
-#editProfileSection input[type="submit"] {
-    background-color: var(--button-bg);
-    color: white;
-    padding: 12px 20px;
-    font-size: 16px; /* Slightly larger font for readability */
-    border: none;
-    border-radius: 8px; /* Rounded corners for a modern look */
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out, background-color 0.2s; /* Smooth transformations */
-    width: auto; /* Adjust width as necessary */
-    text-align: center; /* Center text for a cleaner look */
-}
-
-#editProfileSection button:hover,
-#editProfileSection .file-input-button:hover,
-#editProfileSection input[type="submit"]:hover {
-    background-color: var(--button-hover-bg); /* Slightly darker on hover for interaction feedback */
-    transform: scale(1.05); /* Slight increase in size for interactive feedback */
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Consistent spacing */
-}
-
-.form-group label {
-    font-size: 1.1rem; /* Slightly larger label size for clarity */
-    color: var(--text-color); /* Ensuring readability against all backgrounds */
-    font-weight: 600; /* Semi-bold for emphasis */
-    margin-bottom: 0.5rem; /* Spacing between label and input */
-}
-
-.form-group input[type="text"], .form-group textarea {
-    background-color: var(--input-bg);
-    color: var(--input-text);
-    border: 2px solid var(--input-border); /* Slightly thicker border for presence */
-    border-radius: 8px; /* Softly rounded edges */
-    padding: 12px; /* Comfortable padding for text entry */
-    font-size: 1rem; /* Readable font size */
-    transition: border-color 0.2s ease-in-out; /* Smooth transition for focus */
-}
-
-.form-group textarea {
-    min-height: 120px; /* Provide ample space for bio input */
-}
-
-.form-group input[type="text"]:focus, .form-group textarea:focus {
-    border-color: var(--input-focus-border); /* Highlight focus with a vibrant color */
-    outline: none; /* Remove default focus outline for custom styling */
-}
-
-button, .file-input-button, input[type="submit"] {
-    /* Button styles enhanced for better user interaction */
-    background-color: var(--button-bg);
-    color: white;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 15px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-button:hover, .file-input-button:hover, input[type="submit"]:hover {
-    background-color: var(--button-hover-bg); /* Darker shade on hover */
-    transform: translateY(-2px); /* Slight lift effect for interactivity */
-}
-  
-  
-  @media (max-width: 768px) {
-    .profile-container {
-        grid-template-columns: 1fr;
-    }
-
-    .profile-photo-section, .user-info-section {
-        width: 90%; /* Adjust width for smaller screens */
-        margin: 0 auto; /* Center align */
-    }
 }

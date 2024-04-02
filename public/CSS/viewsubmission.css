@@ -1,20 +1,11 @@
-/* Base Styling */
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #121212; /* Dark theme background */
-    color: #E0E0E0; /* Light grey text for readability */
-}
-
-h1 {
+.dashboard-content h1 {
     text-align: center;
     color: #BB86FC; /* Soft purple for a bit of color */
     margin: 20px 0;
 }
 
 /* Filters and Search */
-div {
+.dashboard-content > div {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -24,7 +15,8 @@ div {
     border-bottom: 2px solid #333; /* Subtle separator */
 }
 
-input[type="text"], select {
+.dashboard-content input[type="text"],
+.dashboard-content select {
     padding: 8px;
     background-color: #333; /* Dark input fields */
     border: 1px solid #444; /* Slightly visible borders */
@@ -32,7 +24,7 @@ input[type="text"], select {
     color: #DDD; /* Light text color */
 }
 
-button {
+.dashboard-content button {
     padding: 8px 16px;
     background-color: #007bff; /* Bootstrap primary blue for consistency */
     color: white;
@@ -42,50 +34,53 @@ button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+.dashboard-content button:hover {
     background-color: #0056b3;
 }
 
 /* Table Styling */
-table#data-table {
+.dashboard-content table#data-table {
     width: 90%;
     margin: 20px auto;
     border-collapse: collapse;
 }
 
-table#data-table, th, td {
+.dashboard-content table#data-table,
+.dashboard-content th,
+.dashboard-content td {
     border: 1px solid #444; /* Subtle borders for cells */
 }
 
-th, td {
+.dashboard-content th,
+.dashboard-content td {
     text-align: left;
     padding: 8px;
 }
 
-th {
+.dashboard-content th {
     background-color: #333; /* Dark header background */
     color: #FFF; /* White text for headers */
 }
 
-td {
+.dashboard-content td {
     background-color: #242424; /* Dark cell backgrounds */
     color: #E0E0E0; /* Light cell text */
 }
 
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
-    div {
+    .dashboard-content > div {
         flex-direction: column;
         align-items: center;
     }
     
-    table#data-table {
+    .dashboard-content table#data-table {
         width: 98%;
     }
 }
 
 /* Go back button styling */
-button[onclick*='submit-data.html'] {
+.dashboard-content button[onclick*='submit-data.html'] {
     display: block;
     width: fit-content;
     margin: 20px auto;
@@ -93,6 +88,6 @@ button[onclick*='submit-data.html'] {
     transition: transform 0.2s;
 }
 
-button[onclick*='submit-data.html']:hover {
+.dashboard-content button[onclick*='submit-data.html']:hover {
     transform: translateY(-2px);
 }

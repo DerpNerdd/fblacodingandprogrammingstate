@@ -1,57 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="author" content="Alan Sanchez, Daniel Freeman, Oliver Kuopus">
-    <meta name="description" content="Global is the Number One most trusted security site. We provide security for you and your clients information.">
-
-    <meta property="og:image" content="">
-    <meta property="og:title" content="">
-    <meta property="og:description" content="">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <link rel="stylesheet" href="./CSS/profile.css">
+    <link rel="stylesheet" href="./CSS/dashboard.css">
 </head>
-<body class="bg-black font-sans leading-normal tracking-normal">
-    <nav class="navbar">
-    <div class="navbar-content">
-      <a href="#Home" class="navbar-logo">
-          <img src="./Media/Global (1).png" alt="Logo" class="logo">
-      </a>
-      <div class="nav-links">
-          <a href="#product" class="nav-link">Product</a>
-          <a href="#solutions" class="nav-link">Solutions</a>
-          <a href="#opensource" class="nav-link">Open Source</a>
-          <a href="#pricing" class="nav-link">Pricing</a>
-      </div>
-    </div>
-    <div class="nav-buttons">
-      <button class="btn login" onclick="window.location.href='logintest.html';">Login</button>
-      <button class="btn signup"  onclick="window.location.href='signup.html';">Sign up</button>
-    </div>
-    </nav>
-    <main>
-        <div class="user-info">
-            <img id="profile img" src="./Media/google.png" alt="">
-            <div class="names">
-                <h1 id="name">Oliver Kuopus</h1>
-                <p id="username">oakuopus</p>
-            </div>
-            <button id="edit-profile">Edit profile</button>
+<body class="dark-theme bg-black font-sans leading-normal tracking-normal">
+    <header class="top-navbar">
+        <!-- Hamburger menu button -->
+        <button aria-label="Open navigation menu" id="menu-toggle" class="hamburger" type="button">
+            <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+            </span>
+        </button>
+        <img src="./Media/Global (1).png" alt="Company Logo" class="company-logo" />
+        <span class="dashboard-title">Dashboard</span>
+
+        <div id="profile-actions-container">
+            <form id="search-form" action="/search" method="GET">
+                <input type="search" id="search-input" name="query" placeholder="Search..." aria-label="Search through site content">
+                <button type="submit" id="search-button" onclick="window.location.href='view-data.html'">Search</button>
+            </form>
+            <a href="/submit-data.html" class="submit-data-btn">
+                <svg viewBox="0 0 16 16" class="plus-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M8 4a.75.75 0 01.75.75v3h3a.75.75 0 010 1.5h-3v3a.75.75 0 01-1.5 0v-3h-3a.75.75 0 010-1.5h3v-3A.75.75 0 018 4z"/>
+                </svg>
+                <span>New</span>
+            </a>
+            <a href="/profile.html" class="user-profile">
+                <img src="" alt="Profile Picture" class="profile-pic" id="profile-pic">
+            </a>
         </div>
-        <section class="data-sets-container">
-            <p class="data-head-text"><strong>Data Sets</strong><a href="#">Edit data</a></p> 
-            <div class="data-sets-grid">
-                <div class="data-sets"></div>
-                <div class="data-sets"></div>
-                <div class="data-sets"></div>
-                <div class="data-sets"></div>
-                <div class="data-sets"></div>
-                <div class="data-sets"></div>
+
+          </div>
+    </header>
+    <aside class="side-navbar">
+        <button aria-label="Close navigation menu" id="close-nav" class="close-nav">&times;</button>
+        <img src="./Media/Global (1).png" alt="Company Logo" class="side-navbar-logo" />
+        <!-- Side navigation content -->
+        <nav>
+            <a href="dashboard.html" class="nav-link home-link">
+                <img src="./Media/homeicon.png" alt="Home" class="nav-icon" />
+                <span>Home</span>
+            </a>
+            <a href="submit-data.html" class="nav-link create-link">
+                <img src="./Media/uploadicon.png" alt="Create" class="nav-icon" />
+                <span>Create</span>
+            </a>
+            <a href="view-data.html" class="nav-link create-link">
+                <img src="./Media/viewicon.png" alt="View" class="nav-icon" />
+                <span>View</span>
+            </a>
+            <a href="settings.html" class="nav-link create-link">
+                <img src="./Media/settingsicon.png" alt="Settings" class="nav-icon" />
+                <span>Settings</span>
+            </a>
+            <a href="profile.html" class="nav-link create-link">
+                <img src="./Media/profileicon.png" alt="Profile" class="nav-icon" />
+                <span>Profile</span>
+            </a>
+        </nav>
+        <footer class="side-navbar-footer">
+            <div class="side-navbar-footer-content">
+              <p>&copy; 2024 Global, Inc. <span class="footer-links">
+                <a href="#">About</a> |
+                <a href="#">Blog</a> |
+                <a href="#">Terms</a> |
+                <a href="#">Privacy</a> |
+                <a href="#">Security</a> |
+                <a href="#">Status</a>
+              </span></p>
             </div>
-        </section>
+          </footer>
+          
+
+
+    </aside>
+    <main class="dashboard-content">
+        <main class="profile-container">
+            <section class="profile-photo-section">
+                <div class="profile-photo-wrapper">
+                  <div class="profile-photo">
+                    <img id="profilePicture" src="" alt="Profile Picture">
+                  </div>
+                </div>
+            </section>
+            <section class="user-info-section">
+                <h1 id="userName">Username</h1>
+                <p id="bio">Bio goes here...</p>
+                <p id="email">Email: user@example.com</p>
+                <button id="editProfileBtn" type="button">Edit Profile</button>
+                <div id="editProfileSection" style="display:none;">
+                    <form id="editBioForm">
+                        <label for="bioText">Bio:</label>
+                        <textarea id="bioText" name="bioText"></textarea>
+                        <input type="submit" value="Save Bio">
+                    </form>
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <label for="profileImage" class="file-input-button">Choose File</label>
+                        <input type="file" id="profileImage" name="profileImage" style="display:none;">
+                        <input type="submit" value="Upload Image">
+                    </form>
+                </div>
+            </section>
+        </main>
+    
     </main>
-</nav>
+
+    <script src="./dashboard.js"></script>
+    <script src="./profile.js"></script>
+
 </body>
 </html>
+
+

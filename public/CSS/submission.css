@@ -1,13 +1,5 @@
-/* Base styling */
-body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #121212; /* Dark background */
-    color: #E0E0E0; /* Light grey text */
-}
-
-.container {
+/* Scope styles to only affect content within .dashboard-content */
+.dashboard-content .container {
     max-width: 600px;
     margin: 40px auto;
     padding: 20px;
@@ -16,46 +8,45 @@ body, html {
     box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Subtle shadow for depth */
 }
 
-h1 {
-    color: #BB86FC; /* Soft purple for a bit of color */
+.dashboard-content h1 {
+    color: #BB86FC;
     text-align: center;
     margin-bottom: 30px;
 }
 
-/* Form styling */
-form {
+/* Adjust the form styling to only apply within .dashboard-content */
+.dashboard-content form {
     display: flex;
     flex-direction: column;
 }
 
-label {
+.dashboard-content label {
     margin-bottom: 5px;
     font-weight: 600;
 }
 
-input[type="text"],
-input[type="email"] {
-    margin-bottom: 20px; /* Space out inputs */
+.dashboard-content input[type="text"],
+.dashboard-content input[type="email"] {
+    margin-bottom: 20px;
     padding: 10px;
-    border: 1px solid #555; /* More defined border */
+    border: 1px solid #555;
     border-radius: 5px;
     background-color: #333;
     color: #fff;
     transition: border-color 0.25s ease-in-out;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus {
+.dashboard-content input[type="text"]:focus,
+.dashboard-content input[type="email"]:focus {
     outline: none;
-    border-color: #BB86FC; /* Highlight effect on focus */
+    border-color: #BB86FC;
 }
 
-/* Submit button enhancements */
-.button.primary {
+.dashboard-content .button.primary {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #6200EE; /* Vibrant purple */
+    background-color: #6200EE;
     color: white;
     font-weight: bold;
     text-transform: uppercase;
@@ -63,16 +54,15 @@ input[type="email"]:focus {
     transition: background-color 0.25s, transform 0.2s;
 }
 
-.button.primary:hover {
+.dashboard-content .button.primary:hover {
     background-color: #3700B3;
-    transform: translateY(-2px); /* Slight lift effect */
+    transform: translateY(-2px);
 }
 
-/* Adjustments for additional information and breaks */
-input[type="text"]#addInformation {
-    grid-column: 1 / -1; /* Ensure it spans the full width if using grid */
+.dashboard-content input[type="text"]#addInformation {
+    grid-column: 1 / -1;
 }
 
-br {
-    display: none; /* Hide <br> elements for cleaner spacing */
+.dashboard-content br {
+    display: none;
 }

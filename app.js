@@ -673,22 +673,20 @@ app.get('/api/current-user', (req, res) => {
 
 
 
+// app.js
 app.get('/api/search', async (req, res) => {
-  console.log("Search query received:", req.query.query);
   const searchQuery = req.query.query; // Extract query from URL parameters
   try {
-      // Perform the search operation. Assuming a simple text search for simplicity.
-      const searchResults = await Partner.find({
-          $text: { $search: searchQuery }
-      }).lean();
-
-      // Render the view-data.ejs template with the searchResults data
-      res.render('view-data', { searchResults: searchResults });
+    const searchResults = await Partner.find({ $text: { $search: searchQuery }}).lean();
+    // Send JSON response back to the client
+    res.json(searchResults);
   } catch (error) {
-      console.error('Search error:', error);
-      res.status(500).render('error', { error: error }); // Assume you have an error.ejs for error rendering
+    console.error('Search error:', error);
+    // Send a JSON error message
+    res.status(500).json({ error: 'Error performing the search' });
   }
 });
+
 
 // New JSON search endpoint
 app.get('/api/current-user', (req, res) => {

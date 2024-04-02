@@ -61,6 +61,33 @@ body, html {
     /* Additional styling as needed */
 }
 
+.side-navbar-footer {
+    position: absolute;
+    bottom: 10px; /* adjust as needed */
+    left: 0;
+    right: 0;
+    padding: 10px;
+  }
+  
+  .side-navbar-footer-content p {
+    color: #a1a1a1; /* Gray text color for small print */
+    font-size: 0.75rem; /* Small font size for footer text */
+    text-align: center;
+    margin: 0; /* Removes margin */
+    padding-bottom: 20px;
+  }
+  
+  .side-navbar-footer-content .footer-links a {
+    color: inherit; /* Inherits gray text color */
+    padding: 0 5px; /* Spacing on the sides of the links */
+    text-decoration: none; /* Remove underline from links */
+    display: inline; /* Inline display for side by side */
+  }
+  
+  .side-navbar-footer-content .footer-links a:hover {
+    text-decoration: underline; /* Underline on hover for better UX */
+  }
+
 .submit-data-btn {
     display: inline-flex;
     align-items: center;
@@ -176,21 +203,33 @@ body, html {
     min-height: calc(100% - 50px);
 }
 
-/* Side navigation bar styling */
 .side-navbar {
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
-    width: 250px;
+    width: 400px; /* Adjust the width as needed */
     background: #d0d0d0; /* Lighter shade for the side navbar */
     color: #333; /* Dark text for readability */
     transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
+    padding-top: 30px; /* Adjusted space for the logo */
+    border-top-right-radius: 20px; /* Curved top right corner */
+    border-bottom-right-radius: 0; /* Straight bottom right corner */
+    border-bottom-left-radius: 0; /* Straight bottom left corner */
+    border-top-left-radius: 0; /* Straight top left corner */
 }
 
 .side-navbar.active {
     transform: translateX(0);
+}
+
+.side-navbar-logo {
+    width: 40%; /* Reduce the width to make the logo smaller */
+    max-width: 120px; /* Set a max-width for control over the size */
+    position: absolute; /* Position it absolutely within the side navbar */
+    top: 10px; /* Adjust the top value to align it as needed */
+    left: 10px; /* Adjust left value to position closer to the corner */
 }
 
 /* Footer styling */
@@ -215,6 +254,47 @@ body, html {
     cursor: pointer;
 }
 
+nav {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px; /* Comfortable spacing from logo and close button */
+}
+
+.home-link {
+    margin-top: 90px; /* Increased space below the close button */
+    font-size: 2rem; /* Semi-large text */
+    color: #f0f0f0; /* Almost white-ish text color */
+}
+
+.create-link {
+    margin-top: 20px; /* Space between this link and the previous one */
+    font-size: 2rem; /* Semi-large text */
+    color: #f0f0f0; /* Almost white-ish text color */
+}
+
+/* General navigation link style */
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px; /* Semi-large padding */
+    color: inherit; /* Inherit text color from parent */
+    text-decoration: none; /* No underline */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth transition for hover */
+    margin-bottom: 10px; /* Example adjustment */
+
+}
+
+.nav-icon {
+    margin-right: 15px; /* Space between icon and text */
+    width: 30px; /* Semi-large icon */
+    height: 30px; /* Semi-large icon */
+}
+
+/* Hover effect */
+.nav-link:hover {
+    background-color: #868686; /* Light gray hover */
+}
 /* Dark theme styles */
 body.dark-theme {
     background: #1e1e1e; /* Darker shade for the dark theme background */
@@ -243,7 +323,7 @@ body.dark-theme .dashboard-content {
 
 /* Close button for the side navbar */
 .close-nav {
-    font-size: 30px;
+    font-size: 60px;
     border: none;
     background: none;
     cursor: pointer;
@@ -251,5 +331,9 @@ body.dark-theme .dashboard-content {
     top: 0;
     right: 0;
     padding: 10px;
+    padding-top: 40px;
+    padding-right: 50px;
     color: #747474;
+    z-index: 1; /* Ensures the button is above the navbar background */
+
 }

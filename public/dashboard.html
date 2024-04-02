@@ -28,7 +28,7 @@
         <div id="profile-actions-container">
             <form id="search-form" action="/search" method="GET">
                 <input type="search" id="search-input" name="query" placeholder="Search..." aria-label="Search through site content">
-                <button type="submit" id="search-button">Search</button>
+                <button type="submit" id="search-button" onclick="window.location.href='view-data.html'">Search</button>
             </form>
             <a href="/submit-data.html" class="submit-data-btn">
                 <svg viewBox="0 0 16 16" class="plus-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +36,7 @@
                 </svg>
                 <span>New</span>
             </a>
-            <a href="/profiletest.html" class="user-profile">
+            <a href="/profile.html" class="user-profile">
                 <img src="" alt="Profile Picture" class="profile-pic" id="profile-pic">
             </a>
         </div>
@@ -45,10 +45,45 @@
     </header>
     <aside class="side-navbar">
         <button aria-label="Close navigation menu" id="close-nav" class="close-nav">&times;</button>
+        <img src="./Media/Global (1).png" alt="Company Logo" class="side-navbar-logo" />
         <!-- Side navigation content -->
         <nav>
-            <a  onclick="window.location.href='navbar-testing.html'">Form Test</a>
+            <a href="dashboard.html" class="nav-link home-link">
+                <img src="./Media/homeicon.png" alt="Home" class="nav-icon" />
+                <span>Home</span>
+            </a>
+            <a href="submit-data.html" class="nav-link create-link">
+                <img src="./Media/uploadicon.png" alt="Create" class="nav-icon" />
+                <span>Create</span>
+            </a>
+            <a href="view-data.html" class="nav-link create-link">
+                <img src="./Media/viewicon.png" alt="View" class="nav-icon" />
+                <span>View</span>
+            </a>
+            <a href="settings.html" class="nav-link create-link">
+                <img src="./Media/settingsicon.png" alt="Settings" class="nav-icon" />
+                <span>Settings</span>
+            </a>
+            <a href="profile.html" class="nav-link create-link">
+                <img src="./Media/profileicon.png" alt="Profile" class="nav-icon" />
+                <span>Profile</span>
+            </a>
         </nav>
+        <footer class="side-navbar-footer">
+            <div class="side-navbar-footer-content">
+              <p>&copy; 2024 Global, Inc. <span class="footer-links">
+                <a href="#">About</a> |
+                <a href="#">Blog</a> |
+                <a href="#">Terms</a> |
+                <a href="#">Privacy</a> |
+                <a href="#">Security</a> |
+                <a href="#">Status</a>
+              </span></p>
+            </div>
+          </footer>
+          
+
+
     </aside>
     <main class="dashboard-content">
         <!-- Main content -->
@@ -59,3 +94,4 @@
     <script src="./dashboard.js"></script>
 </body>
 </html>
+
