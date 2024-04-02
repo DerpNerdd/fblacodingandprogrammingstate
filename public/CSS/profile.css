@@ -1,3 +1,4 @@
+/* Root variable definitions */
 :root {
   --bg-color: #0d1117; /* Dark gray background */
   --text-color: #c9d1d9; /* Lighter text for readability against dark background */
@@ -17,79 +18,185 @@
   --font-secondary: Georgia, "Times New Roman", Times, serif; /* Secondary font for a more distinct, elegant look */
 }
 
-body {
-  background: linear-gradient(to right, var(--background-gradient-start), var(--background-gradient-end)), var(--bg-color);
-  color: var(--text-color);
-  font-family: var(--font-primary);
-  margin: 0;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+.dashboard-content {
+  display: flex;
+  justify-content: center; /* Center children horizontally */
+  align-items: center; /* Align children vertically */
+  flex-wrap: wrap; /* Allow items to wrap as needed */
+  gap: 2rem; /* Space between items */
+}
+
+
+/* Profile container styles */
+.dashboard-content .profile-container {
+  display: flex;
+  justify-content: space-evenly; /* Even spacing around items */
+  align-items: flex-start; /* Align items at the start vertically */
+  width: 100%; /* Use the full width of the container */
+  max-width: 1200px; /* Maximum width to avoid overly wide layouts */
+  margin: auto; /* Ensure container is centered */
+}
+
+/* Actual profile photo styles */
+.dashboard-content .profile-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1; /* Make sure the image is above the spinning border */
+}
+
+
+.dashboard-content .profile-photo-section {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  position: relative; /* Relative position to contain the absolute elements */
+
+}
+
+.dashboard-content .profile-photo-wrapper {
+  width: 320px; /* Increased size of the photo */
+  height: 320px;
+  margin: 32px; /* Adjust margin to ensure space around the larger photo */
+}
+
+.dashboard-content .profile-photo-wrapper img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%; /* Round shape */
+  object-fit: cover; /* Cover the wrapper properly */
+}
+
+
+.dashboard-content .profile-photo-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -10px; /* Adjusted for a thicker spinning border */
+  right: -10px;
+  bottom: -10px;
+  left: -10px;
+  border-radius: 50%;
+  border: 4px solid transparent; /* Adjusted for a thicker spinning border */
+  background-image: linear-gradient(white, white), linear-gradient(45deg, var(--border-gradient-start), var(--border-gradient-end));
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  animation: spin 2s linear infinite;
+}
+
+.dashboard-content .profile-photo-section::after {
+  content: '';
+  position: absolute;
+  top: -10px; /* Size of the border */
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%; /* Round shape */
+  border: 5px solid transparent; /* Size of the border */
+  background-image: linear-gradient(var(--bg-color), var(--bg-color)), linear-gradient(45deg, var(--border-gradient-start), var(--border-gradient-end));
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  z-index: -1; /* Under the image */
+  animation: rotate-border 2s linear infinite; /* Animation for rotation */
+}
+
+
+/* Keyframes for rotating border */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* Profile photo image styles */
+.dashboard-content .profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Enhanced User Info Section with Subtler Background Gradient and Centered Layout */
+.dashboard-content .user-info-section {
+  margin: 0; /* Reset any specific margin to allow flexbox to manage spacing */
+  flex: 1; /* Allows the bio section to fill available space */
+  margin-left: 4rem; /* Adequate spacing from the profile photo and its rotating border */
+  padding: 2rem;
+  background: linear-gradient(145deg, rgba(159, 90, 253, 0.6), rgba(11, 127, 171, 0.6)); /* Subtler gradient */
+  color: var(--text-color);
+  border-radius: 15px;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2);
+  text-align: center; /* Centers text within the bio section */
   position: relative;
+  overflow: hidden; /* Ensures background effects do not spill outside the border-radius */
 }
 
-.profile-container {
-  display: block; /* Use block to fit the content area of the dashboard */
-  max-width: none; /* Remove the max-width */
-  margin: 0; /* Remove margin */
-  padding: 1rem; /* Add some padding if necessary */
+/* Dynamic shimmering effect for the bio background */
+.dashboard-content .user-info-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+  transform: translateX(-50%);
+  animation: shimmer 2s infinite;
 }
 
-/* Adjust the profile sections to be more responsive within the dashboard */
-.profile-photo-section,
-.user-info-section {
-  width: 100%; /* Full width to fit the container */
-  margin-bottom: 1rem; /* Space between the sections */
+@keyframes shimmer {
+  0% { transform: translateX(-50%) translate3d(-100%, 0, 0); }
+  100% { transform: translateX(-50%) translate3d(100%, 0, 0); }
 }
 
-/* Remove absolute positioning and transforms that might conflict with the layout */
-.profile-photo-section {
-  position: static; /* Change if it was absolute before */
+/* Typography enhancements */
+.dashboard-content .user-info-section h1, .dashboard-content .user-info-section p {
+  color: #fff; /* Bright white for contrast */
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for depth */
 }
 
-.profile-photo-wrapper,
-.profile-photo,
-.profile-photo img {
-  /* Adjust dimensions to fit within the new structure */
-  width: 100px; /* Example size, adjust as needed */
-  height: 100px; /* Example size, adjust as needed */
+.dashboard-content .user-info-section h1 {
+  font-size: 2.5rem; /* Larger for emphasis */
+  margin-bottom: 1rem; /* Spacing between elements */
 }
 
-.user-info-section {
-  /* Adjust styling to fit the dashboard content area */
-  padding: 1rem;
-  text-align: left; /* Align text to the left, or center if preferred */
+.dashboard-content .user-info-section p {
+  font-size: 1.2rem; /* Improved readability */
+  margin-bottom: 2rem; /* Increased spacing */
 }
 
-#editProfileSection button,
-#editProfileSection .file-input-button {
+/* Button Styling */
+.dashboard-content .user-info-section button,
+.dashboard-content .user-info-section .file-input-button,
+.dashboard-content .user-info-section input[type="submit"] {
   background-color: var(--button-bg);
-  color: white;
+  color: #ffffff;
   padding: 10px 20px;
-  font-size: 1rem;
-  border: none;
   border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-  width: auto; /* Allows button to size with content */
-  display: block; /* Block display for full-width effect */
+  font-weight: 600; /* Bold text */
+  letter-spacing: 0.05rem; /* Spaced out letters for style */
+  transition: background-color 0.2s ease-in-out, transform 0.1s;
 }
 
-/* Continue with the rest of your old CSS for the form-group, input, button, and hover effects. */
+.dashboard-content .user-info-section button:hover,
+.dashboard-content .user-info-section .file-input-button:hover,
+.dashboard-content .user-info-section input[type="submit"]:hover {
+  background-color: var(--button-hover-bg);
+  transform: scale(1.05); /* Grow effect on hover */
+}
 
+/* Adjustments for smaller screens */
 @media (max-width: 768px) {
-  .profile-container {
-      gap: 15px;
+  .dashboard-content .profile-container {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .profile-photo-section, .user-info-section {
-      width: 100%; /* Full width on smaller screens */
-  }
-
-  .profile-photo-wrapper {
-      width: 250px; /* Smaller profile photo on small screens */
-      height: 250px;
+  .dashboard-content .user-info-section {
+    margin-left: 0;
+    margin-top: 2rem; /* Spacing between the image and bio on smaller screens */
+    width: 80%; /* Adjust width for mobile devices */
   }
 }

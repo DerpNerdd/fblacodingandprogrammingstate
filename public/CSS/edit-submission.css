@@ -1,0 +1,79 @@
+body {
+    background-color: #181a1d; /* Dark background for the whole page */
+    color: #d1d5da; /* Light text color for the whole page */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font for the whole page */
+    line-height: 1.6; /* Spacing for readability */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 400px; /* Set width for the container */
+    padding: 30px;
+    background-color: #242424; /* Dark background for the container */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+h1 {
+    text-align: center;
+    color: #BB86FC; /* Text color for the heading */
+    margin-bottom: 20px; /* Space below the heading */
+    padding-right: 30px;
+    text-decoration: underline;
+}
+
+/* Style each input field */
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+    width: calc(100% - 20px); /* Adjust the width of input fields */
+    padding: 10px;
+    margin-bottom: 15px; /* Space between form fields */
+    border: 1px solid #555; /* Border color */
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff; /* Text color inside input fields */
+}
+
+/* Style the focus state of input fields */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus {
+    border-color: #BB86FC; /* Border color when the field is focused */
+}
+
+/* Style the submit button */
+input[type="submit"] {
+    width: calc(100% - 20px); /* Adjust the width of the submit button */
+    padding: 10px;
+    background-color: #6200EE; /* Background color for the button */
+    color: white; /* Text color for the button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    margin-left: 15px;
+}
+
+/* Hover state for the submit button */
+input[type="submit"]:hover {
+    background-color: #3700B3; /* Darker background on hover */
+}
+
+form{
+    border: 3px solid rgb(44, 44, 44);
+    padding: 20px;
+    border-radius: 20px;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .container {
+        width: 90%; /* On smaller screens, the container takes up more width */
+        margin: 20px auto; /* Less vertical space on smaller screens */
+    }
+}

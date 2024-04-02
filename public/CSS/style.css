@@ -68,28 +68,17 @@ html, body {
     background-color: #7d3cf8;
 }
 
-
 header {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 4rem; /* Add padding to top to lift content */
-    min-height: 100vh;
-    overflow: hidden; /* Ensure no overflow from pseudo-element */
+    padding-top: 4rem;
+    min-height: auto; /* Adjust as necessary, could be 500px or any other value */
+    overflow: hidden;
 }
 
-/* Gradient overlay to smooth transition from video to body */
-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 20%; /* Adjust the height based on your needs */
-    background: linear-gradient(to top, #000, transparent);
-    z-index: 20; /* Ensure it's above the video but below the text */
-}
+
 
 /* Base Styles */
 .input-button-group {

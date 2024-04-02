@@ -218,6 +218,7 @@ body, html {
     border-bottom-right-radius: 0; /* Straight bottom right corner */
     border-bottom-left-radius: 0; /* Straight bottom left corner */
     border-top-left-radius: 0; /* Straight top left corner */
+    z-index: 1000;
 }
 
 .side-navbar.active {
