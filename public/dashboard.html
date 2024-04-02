@@ -42,7 +42,30 @@
         </div>
 
           </div>
+
+          <aside class="dashboard-sidebar">
+            <div class="new-submission">
+                <a href="/submit-data.html" class="submit-data-btn">New Submission</a>
+            </div>
+            <div class="search-submissions">
+                <form id="search-form" action="/search" method="GET">
+                    <input type="search" id="search-input" name="query" placeholder="Search submissions...">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+            <div class="submission-list">
+                <h3>My Submissions</h3>
+                <ul>
+                    <!-- List of submissions -->
+                    <!-- Example entry -->
+                    <li><a href="#">DerpNerd/Global</a></li>
+                    <!-- More entries -->
+                </ul>
+            </div>
+        </aside>
+
     </header>
+
     <aside class="side-navbar">
         <button aria-label="Close navigation menu" id="close-nav" class="close-nav">&times;</button>
         <img src="./Media/Global (1).png" alt="Company Logo" class="side-navbar-logo" />
@@ -86,7 +109,7 @@
 
     </aside>
     <main class="dashboard-content">
-        <!-- Main content -->
+        
     </main>
     <footer class="dashboard-footer">
         <!-- Footer content -->

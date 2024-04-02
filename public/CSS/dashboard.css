@@ -16,8 +16,9 @@ body, html {
     display: flex;
     align-items: center;
     padding: 0 20px;
-    z-index: 1000;
-    justify-content: space-between; /* This ensures space between items and aligns items to the far right */
+    position: relative; /* Added position relative */
+    z-index: 1000; /* High z-index to ensure it's on top */
+    justify-content: space-between;
 }
 
 .company-logo {
@@ -198,9 +199,11 @@ body, html {
 
 /* Dashboard content styling */
 .dashboard-content {
+    margin-left: 300px; /* Updated to match the new sidebar width */
     padding: 20px;
-    background: #ffffff; /* White background for content area */
-    min-height: calc(100% - 50px);
+    background: #0d1117; /* Dark background for the content area */
+    min-height: 100vh;
+    
 }
 
 .side-navbar {
@@ -238,10 +241,11 @@ body, html {
     background: #e0e0e0; /* Lighter shade for the footer */
     padding: 10px 20px;
     text-align: center;
-    position: fixed;
     bottom: 0;
     width: 100%;
     box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    z-index: 10; /* Ensure it's above the sidebar but below the top navbar */
+
 }
 
 /* Theme toggle button styling */
@@ -322,6 +326,93 @@ body.dark-theme .dashboard-content {
     background: #2d2d2d; /* Dark background for content area */
 }
 
+.dashboard-sidebar {
+    bottom: 0; /* Stretch to the bottom edge of the viewport */
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5); /* Shadow on the right edge */
+    position: fixed; /* Keeps the sidebar in a fixed position */
+    top: 50px; /* Starts below the top-navbar */
+    left: 0;
+    width: 300px; /* Sidebar width */
+    background: #161b22; /* Dark background color for the sidebar */
+    color: #c9d1d9; /* Light color for text */
+    padding: 20px;
+    z-index: 2; /* Lower z-index than the top-navbar */
+}
+
+.dashboard-sidebar .new-submission,
+.dashboard-sidebar .search-submissions {
+    margin-bottom: 20px;
+}
+
+.dashboard-sidebar .submit-data-btn {
+    display: block;
+    background-color: #2ea44f;
+    color: white;
+    text-align: center;
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+.dashboard-sidebar .submit-data-btn:hover {
+    background-color: #24943e;
+}
+
+.dashboard-sidebar .search-submissions form {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.dashboard-sidebar .search-submissions input,
+.dashboard-sidebar .search-submissions button {
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+}
+
+.dashboard-sidebar .search-submissions input {
+    flex-grow: 1;
+    background: #0d1117;
+    color: #c9d1d9;
+}
+
+.dashboard-sidebar .search-submissions button {
+    background-color: #21262d;
+    color: white;
+    cursor: pointer;
+}
+
+.dashboard-sidebar .search-submissions button:hover {
+    background-color: #30363d;
+}
+
+.dashboard-sidebar .submission-list h3 {
+    color: #58a6ff;
+    margin-bottom: 10px;
+}
+
+.dashboard-sidebar .submission-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dashboard-sidebar .submission-list li a {
+    color: #8b949e;
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.dashboard-sidebar .submission-list li a:hover {
+    background-color: #30363d;
+}
+
+
 /* Close button for the side navbar */
 .close-nav {
     font-size: 60px;
@@ -335,6 +426,6 @@ body.dark-theme .dashboard-content {
     padding-top: 40px;
     padding-right: 50px;
     color: #747474;
-    z-index: 1; /* Ensures the button is above the navbar background */
+    z-index: 999; /* Ensure it's above the sidebar */
 
 }
