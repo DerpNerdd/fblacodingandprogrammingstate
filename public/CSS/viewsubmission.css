@@ -1,7 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+
 .dashboard-content h1 {
     text-align: center;
     color: #BB86FC; /* Soft purple for a bit of color */
     margin: 20px 0;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+.dashboard-content table#data-table th {
+    background: linear-gradient(145deg, #373b47, #313540);
+    color: #ead9ff; /* Gold color for headings */
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for depth */
+    font-weight: 500; /* Medium font weight */
+    font-size: 1.2rem; /* Slightly larger font size */
+}
+
+.dashboard-content table#data-table td {
+    color: #e9e9e9; /* Green-yellowish color for table data */
+    border-bottom: 2px solid #444; /* Solid border for separation */
+    transition: transform 0.2s ease-in-out, background-color 0.3s ease; /* Smooth transitions */
+}
+
+.dashboard-content table#data-table tr:hover {
+    background-color: #292d36; /* Darker background on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for lifted effect */
 }
 
 /* Filters and Search */
@@ -32,52 +57,84 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-family: 'Roboto', sans-serif; /* Consistency in font usage */
+    font-weight: 500; /* Medium font weight for better legibility */
+    text-transform: uppercase; /* Uppercase for a more formal look */
+    letter-spacing: 0.05em; /* Spacing between letters */
 }
 
 .dashboard-content button:hover {
     background-color: #0056b3;
 }
 
-/* Table Styling */
+/* Table Styling Enhancements */
 .dashboard-content table#data-table {
     width: 90%;
     margin: 20px auto;
     border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden; /* Ensures the border-radius applies to the table */
 }
 
 .dashboard-content table#data-table,
 .dashboard-content th,
 .dashboard-content td {
-    border: 1px solid #444; /* Subtle borders for cells */
+    border: 1px solid #444;
 }
 
 .dashboard-content th,
 .dashboard-content td {
     text-align: left;
-    padding: 8px;
+    padding: 12px;
+    color: #E0E0E0;
+    transition: background-color 0.3s ease-in-out; /* Smooth background color transition */
 }
 
 .dashboard-content th {
-    background-color: #333; /* Dark header background */
-    color: #FFF; /* White text for headers */
+    background-color: #333;
+    color: #FFF;
+    font-size: 1.1rem;
+    letter-spacing: 1px; /* Spacing between letters for better readability */
 }
 
 .dashboard-content td {
-    background-color: #242424; /* Dark cell backgrounds */
-    color: #E0E0E0; /* Light cell text */
+    background-color: #242424;
+    transition: background-color 0.3s; /* Transition for hover effect */
 }
 
-/* Responsive adjustments for smaller screens */
-@media (max-width: 768px) {
-    .dashboard-content > div {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .dashboard-content table#data-table {
-        width: 98%;
-    }
+/* Hover effect for table rows */
+.dashboard-content tr:hover td {
+    background-color: #2d2d2d; /* Slightly lighter than td background */
 }
+
+/* Styling for the 'Go back' button */
+.dashboard-content button[onclick*='submit-data.html'] {
+    background-color: #007bff; /* Bootstrap primary blue for consistency */
+    color: white;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.dashboard-content button[onclick*='submit-data.html']:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly larger on hover */
+}
+
+@media (max-width: 768px) {
+    .dashboard-content table#data-table {
+        width: 98%; /* Full width on smaller screens */
+    }
+
+    .dashboard-content th, .dashboard-content td {
+        font-size: 1rem; /* Adjust font size on smaller devices */
+    }
+
+}
+
 
 /* Go back button styling */
 .dashboard-content button[onclick*='submit-data.html'] {

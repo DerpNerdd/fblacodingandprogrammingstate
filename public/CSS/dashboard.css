@@ -237,15 +237,33 @@ body, html {
     left: 10px; /* Adjust left value to position closer to the corner */
 }
 
-/* Footer styling */
 .dashboard-footer {
-    padding: 10px 20px;
+    padding: 20px 0;
     text-align: center;
-    bottom: 0;
-    width: 100%;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-    z-index: 10; /* Ensure it's above the sidebar but below the top navbar */
+    color: #6c757d; /* Gray text */
+    background-color: #343a40; /* Slightly darker background for footer */
+    font-size: 0.75rem; /* Smaller text size */
+}
 
+.dashboard-footer p {
+    margin: 0; /* Removes default margin */
+    display: inline; /* Align with navigation inline */
+    padding-left: 175px;
+}
+
+.footer-navigation {
+    display: inline; /* Keeps navigation inline */
+    padding-left: 120px; /* Space between copyright text and navigation */
+}
+
+.footer-navigation a {
+    color: #6c757d; /* Gray text */
+    text-decoration: none; /* No underline */
+    margin: 0 10px; /* Spacing between links */
+}
+
+.footer-navigation a:hover {
+    text-decoration: underline; /* Underline on hover for better UX */
 }
 
 /* Theme toggle button styling */

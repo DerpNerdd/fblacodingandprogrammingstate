@@ -1,0 +1,24 @@
+/* Scrollbar for Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+    width: 14px; /* Semi-thick scrollbar width */
+}
+
+::-webkit-scrollbar-track {
+    background: #343a40; /* Soft gray track */
+    border-radius: 7px; /* Smoothly rounded corners for the track */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #5e548e; /* Deep purple thumb */
+    border-radius: 7px; /* Smoothly rounded corners for the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6a5b95; /* Lighter purple when hovered */
+}
+
+/* Scrollbar for Firefox */
+* {
+    scrollbar-width: 14px; /* "auto", "thin", or thickness in pixels */
+    scrollbar-color: #5e548e #343a40; /* thumb and track color */
+}
