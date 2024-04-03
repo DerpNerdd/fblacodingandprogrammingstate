@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
+  loadUserSubmissions();
+
   fetchData();
   populateStates();
   document.getElementById('stateFilter').addEventListener('change', populateCities);
@@ -175,3 +177,21 @@ function applyFilters() {
 
   document.addEventListener('DOMContentLoaded', applyFilters); // Apply filters on page load as well
   
+  function loadUserSubmissions() {
+    fetch('/api/my-submissions', { credentials: 'include' })
+      .then(response => response.json())
+      .then(submissions => {
+        const submissionsList = document.querySelector('.submission-list ul');
+        submissionsList.innerHTML = '';
+        
+        submissions.forEach(submission => {
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '/view-data.html'; // Change this to the appropriate link if needed
+          link.textContent = `${submission.user.username}/${submission.orgName}`;
+          listItem.appendChild(link);
+          submissionsList.appendChild(listItem);
+        });
+      })
+      .catch(error => console.error('Error loading submissions:', error));
+  }

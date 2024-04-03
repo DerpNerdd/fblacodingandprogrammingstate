@@ -43,28 +43,28 @@
 
           </div>
 
-          <aside class="dashboard-sidebar">
-            <div class="new-submission">
-                <a href="/submit-data.html" class="submit-data-btn">New Submission</a>
-            </div>
-            <div class="search-submissions">
-                <form id="search-form" action="/search" method="GET">
-                    <input type="search" id="search-input" name="query" placeholder="Search submissions...">
-                    <button type="submit">Search</button>
-                </form>
-            </div>
-            <div class="submission-list">
-                <h3>My Submissions</h3>
-                <ul>
-                    <!-- List of submissions -->
-                    <!-- Example entry -->
-                    <li><a href="#">DerpNerd/Global</a></li>
-                    <!-- More entries -->
-                </ul>
-            </div>
-        </aside>
-
     </header>
+
+    <aside class="dashboard-sidebar" id="dashboard-sidebar">
+        <div class="new-submission">
+            <a href="/submit-data.html" class="submit-data-btn">New Submission</a>
+        </div>
+    <div class="search-submissions">
+        <form id="search-form" action="view-data.html" method="GET">
+            <input type="search" id="search-input" name="query" placeholder="Search submissions..." aria-label="Search submissions">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+        <div class="submission-list">
+            <h3>My Submissions</h3>
+            <ul>
+                <!-- List of submissions -->
+                <!-- Example entry -->
+                <li><a href="#"></a></li>
+                <!-- More entries -->
+            </ul>
+        </div>
+    </aside>
 
     <aside class="side-navbar">
         <button aria-label="Close navigation menu" id="close-nav" class="close-nav">&times;</button>
@@ -109,12 +109,68 @@
 
     </aside>
     <main class="dashboard-content">
+
+        <div id="personalized-welcome" class="welcome-section">
+            <h1 id="welcome-message"></h1>
+        </div>
+
+        <section class="dashboard-table-section">
+            <h2>Recent Submissions</h2>
+            <div class="dashboard-table-container">
+                <table id="dashboard-data-table">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Org Name</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <!-- More headers as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data rows will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="user-stats-section">
+            <h2>User Statistics</h2>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-number" id="total-submissions">0</span>
+                    <span class="stat-label">Total Submissions</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="most-active-month">-</span>
+                    <span class="stat-label">Most Active Month</span>
+                </div>
+                <!-- Add more stat items as needed -->
+            </div>
+        </section>
         
+        <section class="chart-section">
+            <h2>Submission Trends</h2>
+            <canvas id="submissionChart" height="200"></canvas>
+        </section>
+
+<section class="learning-resources">
+    <h2>Learning Resources</h2>
+    <div class="resources-list">
+        <!-- Learning resources will be added here -->
+    </div>
+</section>
+
+          
+
     </main>
     <footer class="dashboard-footer">
         <!-- Footer content -->
     </footer>
     <script src="./dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </body>
 </html>
 

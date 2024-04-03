@@ -87,7 +87,28 @@
 
 
     </aside>
-    <main class="dashboard-content">
+
+    <aside class="dashboard-sidebar" id="dashboard-sidebar">
+        <div class="new-submission">
+            <a href="/submit-data.html" class="submit-data-btn">New Submission</a>
+        </div>
+    <div class="search-submissions">
+        <form id="search-form" action="view-data.html" method="GET">
+            <input type="search" id="search-input" name="query" placeholder="Search submissions..." aria-label="Search submissions">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="submission-list">
+        <h3>My Submissions</h3>
+        <ul>
+            <!-- List of submissions -->
+            <!-- Example entry -->
+            <li><a href="#"></a></li>
+            <!-- More entries -->
+        </ul>
+    </div>
+    </aside>
+    <main  class="main-content">
         <div class="settings-container">
             <h1>Settings</h1>
             <form id="changeEmailForm" class="settings-form">
@@ -110,6 +131,8 @@
                 <input type="submit" value="Update Password">
             </form>
             
+
+            
             <button id="deleteAccountBtn" class="settings-action-button delete-account">Delete Account</button>
             <button id="logout-btn" onclick="logout()" style="display:none;" class="settings-action-button delete-account">Logout</button>
             <button id="backToDashboardBtn" class="settings-action-button back-dashboard" onclick="window.location.href='dashboard.html';">Back to Dashboard</button>
@@ -120,7 +143,7 @@
         </div>
     </main>
 
-    <script src="settings.js"></script>
+    <script src="./settings.js"></script>
     <script src="./dashboard.js"></script>
     <script src="./submit-data.js"></script>
 

@@ -5,8 +5,8 @@
 body, html {
     height: 100%;
     margin: 0;
+    padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f0f0; /* Lighter shade for the light theme background */
     color: #333;
 }
 
@@ -202,8 +202,9 @@ body, html {
 /* Dashboard content styling */
 .dashboard-content {
     margin-left: 320px; /* Adjust so the main content does not overlap the sidebar */
-    padding: 20px; /* Padding inside the main content area */
+    padding: 0 20px 20px;
     min-height: 100vh; /* Minimum height */
+    
 }
 
 .side-navbar {
@@ -238,7 +239,6 @@ body, html {
 
 /* Footer styling */
 .dashboard-footer {
-    background: #e0e0e0; /* Lighter shade for the footer */
     padding: 10px 20px;
     text-align: center;
     bottom: 0;
@@ -327,16 +327,29 @@ body.dark-theme .dashboard-content .dashboard-page {
 }
 
 .dashboard-sidebar {
+    position: fixed; /* Fixed to the viewport */
+    top: 50px; /* Below the top navbar */
+    left: 0; /* Flush against the left side of the viewport */
+    width: 300px; /* Width of sidebar */
+    height: 100vh; /* Full height of the viewport */
+    padding: 20px;
+    background: #161b22;
+    color: #c9d1d9;
+    overflow-y: auto;
+    z-index: 5;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5);
+    border-right: 1px solid #333;
+    /* Removed the transition */
+  }
+  
+
+.fixed-sidebar {
     position: fixed;
-    top: 50px; /* Adjust based on the height of your top navbar */
-    left: 0;
-    width: 300px; /* Adjust the width as needed */
-    height: calc(100% - 50px); /* Adjust based on the height of your top navbar */
-    background: #161b22; /* Background color */
-    color: #c9d1d9; /* Text color */
-    overflow-y: auto; /* Enable scrolling if the content is too long */
-    z-index: 5; /* Ensure it's above the page content but below modal dialogs if any */
-    padding: 20px; /* Padding inside the sidebar */
+    top: 0; /* Adjust if you want some space above */
+  }
+
+  .sticky-sidebar .dashboard-sidebar {
+    top: 0; /* When the .sticky-sidebar class is active */
 }
 
 .dashboard-sidebar .new-submission,
@@ -429,3 +442,316 @@ body.dark-theme .dashboard-content .dashboard-page {
     z-index: 999; /* Ensure it's above the sidebar */
 
 }
+
+.dashboard-table-section {
+    margin: 40px 20px;
+    color: #E0E0E0;
+}
+
+.dashboard-table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 40px;
+    background: #2E2E48;
+    border-radius: 10px;
+    box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid #4A4A66;
+}
+
+.dashboard-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dashboard-table-container th,
+.dashboard-table-container td {
+    text-align: left;
+    padding: 16px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dashboard-table-container th {
+    background: #43436A;
+    color: #EAEAFD;
+    font-weight: 600;
+    border-bottom: 3px solid #5A5A7A;
+}
+
+.dashboard-table-container tr:hover {
+    background-color: #393860;
+    cursor: default;
+}
+
+.dashboard-table-container td {
+    border-bottom: 1px solid #4A4A66;
+}
+
+.dashboard-table-container tbody tr:nth-child(odd) {
+    background-color: #32334F;
+}
+
+.dashboard-table-container tbody tr:nth-child(even) {
+    background-color: #2B2B47;
+}
+
+.dashboard-table-section h2 {
+    background-color: #626292;
+    color: #FFFFFF;
+    padding: 16px;
+    margin: -20px -20px 20px -20px;
+    border-radius: 10px 10px 0 0;
+    font-size: 2rem;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-table-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.dashboard-table-container::-webkit-scrollbar-thumb {
+    background: #716B9C;
+    border-radius: 10px;
+}
+
+.dashboard-table-container::-webkit-scrollbar-track {
+    background: #202040;
+}
+
+/* Enhancing buttons */
+.dashboard-table-container button {
+    background: #554C81;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    font-weight: 600;
+}
+
+.dashboard-table-container button:hover,
+.dashboard-table-container button:focus {
+    background-color: #6F678E;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    outline: none; /* Avoid blue outline on focus */
+}
+
+/* Styling for empty state */
+.dashboard-table-empty {
+    text-align: center;
+    padding: 20px;
+    color: #6C63FF;
+}
+
+/* Smooth transition for hover effects */
+a:hover,
+button:hover {
+    transition: all 0.2s ease;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .dashboard-table-container th,
+    .dashboard-table-container td {
+        padding: 12px 8px;
+    }
+
+    .dashboard-table-section h2 {
+        font-size: 1.5rem;
+    }
+}
+
+body {
+    font-family: 'Inter', sans-serif; /* Highly legible and modern font */
+    font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif; /* Adds character and style to headers */
+}
+
+/* Adding depth and texture */
+body {
+    background: #1D1E3C;
+    background-image: url('../Media/subtletexture.png'); /* A subtle texture can add depth */
+}
+
+/* Additional visual cues */
+.dashboard-table-container th:hover {
+    background-color: #4C4B7B; /* Slight color change on hover for headers */
+    cursor: pointer;
+}
+
+.dashboard-table-container tr.selected {
+    background-color: #49487A; /* State for selected rows */
+}
+
+.welcome-section {
+    text-align: center;
+    padding: 20px 20px;
+    margin-bottom: 30px;
+    background: #282a36;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #c7c7c7;
+    border-left: 5px solid #8a2be2; /* A purple accent to draw attention */
+    border-right: 5px solid #8a2be2; /* A purple accent to draw attention */
+
+}
+
+.welcome-section h1 {
+    color: #ffffff;
+    font-size: 1.75rem;
+    margin: 0;
+    font-weight: 400; /* Less bold to feel more inviting */
+    letter-spacing: 0.05em; /* Slightly spaced out for readability */
+}
+
+/* Adding a bit of animation to make it feel more dynamic */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.welcome-section {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* For a little interaction */
+.welcome-section:hover {
+    background: #2f3241; /* Slightly lighter on hover for a subtle effect */
+    transition: background 0.3s ease-in-out;
+}
+
+.user-stats-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: #282a36;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #c7c7c7;
+}
+
+.user-stats-section h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #8a2be2; /* Purple accent */
+    padding-bottom: 10px;
+    display: inline-block;
+    margin-top: 0;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+    margin: 10px;
+    flex-grow: 1;
+    min-width: 150px; /* Ensure items don't get too narrow */
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    color: #8a2be2; /* Purple for numbers */
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #c7c7c7;
+}
+
+@media (max-width: 768px) {
+    .stats-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+.learning-resources {
+    background-color: #292D3E; /* A deep, rich blue background */
+    padding: 30px;
+    margin: 40px auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    max-width: 1200px;
+}
+
+.learning-resources h2 {
+    color: #89DDFF; /* A bright, inviting blue */
+    margin-bottom: 20px;
+    font-size: 2rem;
+    text-align: center;
+    border-bottom: 2px solid #6272A4; /* A subtle divider */
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.resources-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.resource {
+    background-color: #44475A; /* A lighter shade for contrast */
+    padding: 20px;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-left: 4px solid #6272A4; /* Highlight effect */
+}
+
+.resource:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.5);
+}
+
+.resource h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.2rem;
+    color: #FFB86C; /* Warm color for titles */
+}
+
+.resource h3 a {
+    color: #FF79C6; /* Vibrant pink for clickable links */
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.resource h3 a:hover {
+    color: #BD93F9; /* A gentle purple for hover state */
+}
+
+.resource p {
+    color: #BFBFBF; /* Soft white for readable text */
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .resources-list {
+        grid-template-columns: 1fr;
+    }
+
+    .learning-resources {
+        padding: 20px;
+        margin: 20px;
+    }
+}
+

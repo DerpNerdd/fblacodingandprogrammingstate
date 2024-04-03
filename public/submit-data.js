@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    loadUserSubmissions();
     // Check for user information to customize the UI
     fetch('/user-info', {
         credentials: 'include', // Include cookies
@@ -63,3 +64,22 @@ function logout() {
     })
     .catch(error => console.error('Logout error:', error));
 }
+
+function loadUserSubmissions() {
+    fetch('/api/my-submissions', { credentials: 'include' })
+      .then(response => response.json())
+      .then(submissions => {
+        const submissionsList = document.querySelector('.submission-list ul');
+        submissionsList.innerHTML = '';
+        
+        submissions.forEach(submission => {
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '/view-data.html'; // Change this to the appropriate link if needed
+          link.textContent = `${submission.user.username}/${submission.orgName}`;
+          listItem.appendChild(link);
+          submissionsList.appendChild(listItem);
+        });
+      })
+      .catch(error => console.error('Error loading submissions:', error));
+  }

@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   fetchProfile(); // Fetch and display profile data on page load
+  loadUserSubmissions();
 
   document.getElementById('editProfileBtn').addEventListener('click', () => {
       const editSection = document.getElementById('editProfileSection');
@@ -69,3 +70,22 @@ document.addEventListener('DOMContentLoaded', () => {
     section.classList.toggle('open');
   });
 });
+
+function loadUserSubmissions() {
+  fetch('/api/my-submissions', { credentials: 'include' })
+    .then(response => response.json())
+    .then(submissions => {
+      const submissionsList = document.querySelector('.submission-list ul');
+      submissionsList.innerHTML = '';
+      
+      submissions.forEach(submission => {
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = '/view-data.html'; // Change this to the appropriate link if needed
+        link.textContent = `${submission.user.username}/${submission.orgName}`;
+        listItem.appendChild(link);
+        submissionsList.appendChild(listItem);
+      });
+    })
+    .catch(error => console.error('Error loading submissions:', error));
+}

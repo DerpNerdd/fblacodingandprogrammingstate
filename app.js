@@ -5,6 +5,7 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const MongoStore = require('connect-mongo');
+const fetch = require('node-fetch'); // Ensure you've installed node-fetch or a similar library
 const flash = require('connect-flash');
 const path = require('path');
 const multer = require('multer');
@@ -28,6 +29,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   profilePicture: { type: String, default: '' }, // URL to the image
   bio: { type: String, default: '' },
+  widgetPreferences: [{ type: String }]
+
 
 });
 
@@ -44,8 +47,22 @@ const partnerSchema = new mongoose.Schema({
   resources: String,
   addInformation: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  createdAt: { type: Date, default: Date.now },
+
 });
 
+const learningResourceSchema = new mongoose.Schema({
+  title: String,
+  description: String,
+  url: String,
+  category: String, // Optional: for filtering by category
+  createdAt: { 
+    type: Date,
+    default: Date.now
+  }
+});
+
+const LearningResource = mongoose.model('LearningResource', learningResourceSchema);
 
 const User = mongoose.model('User', userSchema);
 
@@ -708,7 +725,108 @@ app.get('/api/current-user', (req, res) => {
   });
 });
 
+// Endpoint to get the current user's submissions
+app.get('/api/my-submissions', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
 
+  try {
+    // Populate the 'user' field to get username and other user information
+    const mySubmissions = await Partner.find({ user: req.user._id }).populate('user', 'username').lean();
+    res.json(mySubmissions);
+  } catch (error) {
+    console.error('Error fetching submissions:', error);
+    res.status(500).json({ message: 'Error fetching submissions' });
+  }
+});
+
+app.get('/api/recent-submissions', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
+  
+  try {
+    // Fetch recent submissions, e.g., the last 10 entries
+    const recentSubmissions = await Partner.find().sort({ createdAt: -1 }).limit(10).lean();
+    res.json(recentSubmissions);
+  } catch (error) {
+    console.error('Error fetching recent submissions:', error);
+    res.status(500).json({ message: 'Error fetching recent submissions' });
+  }
+});
+
+app.get('/api/user-stats', async (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: 'Not authenticated' });
+  }
+
+  try {
+    const userId = req.user._id;
+    const submissions = await Partner.find({ user: userId }).lean();
+    const totalSubmissions = submissions.length;
+
+    const monthlySubmissions = submissions.reduce((acc, submission) => {
+      // Ensure createdAt is a valid date
+      const createdAt = new Date(submission.createdAt || Date.now());
+      if (isNaN(createdAt.getTime())) {
+        // If createdAt is not a valid date, skip this submission
+        return acc;
+      }
+
+      const monthYear = createdAt.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+      acc[monthYear] = (acc[monthYear] || 0) + 1;
+      return acc;
+    }, {});
+
+    let mostActiveMonth = '';
+    let maxSubmissions = 0;
+    Object.entries(monthlySubmissions).forEach(([month, count]) => {
+      if (count > maxSubmissions) {
+        mostActiveMonth = month;
+        maxSubmissions = count;
+      }
+    });
+
+    res.json({
+      totalSubmissions,
+      mostActiveMonth: mostActiveMonth || 'N/A', // In case there are no submissions
+    });
+  } catch (error) {
+    console.error('Error fetching user statistics:', error);
+    res.status(500).json({ message: 'Error fetching user statistics' });
+  }
+});
+
+app.get('/api/submission-trends', async (req, res) => {
+  if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: 'Not authenticated' });
+  }
+
+  // This is a placeholder; replace with actual data fetching and aggregation logic
+  res.json({
+      labels: ['January', 'February', 'March'], // Example labels
+      values: [5, 10, 15] // Example values
+  });
+});
+
+
+
+app.get('/api/learning-resources', (req, res) => {
+  const resources = [
+    { "title": "Node.js Official Guide", "url": "https://nodejs.org/en/docs/guides/", "description": "Official Node.js guides covering various aspects of Node.js, including getting started tutorials, debugging tips, and security best practices." },
+    { "title": "MongoDB University", "url": "https://university.mongodb.com/", "description": "Free MongoDB courses for developers to learn at their own pace. Covering everything from basic MongoDB operations to advanced data modeling." },
+    { "title": "React Official Documentation", "url": "https://reactjs.org/docs/getting-started.html", "description": "Dive into React with the official React documentation. Learn about React components, hooks, and the ecosystem." },
+    { "title": "Tailwind CSS Documentation", "url": "https://tailwindcss.com/docs", "description": "Learn how to style your applications efficiently with Tailwind CSS with these comprehensive and easy-to-follow guides." },
+    { "title": "Pro Git Book", "url": "https://git-scm.com/book/en/v2", "description": "The entire Pro Git book, written by Scott Chacon and Ben Straub and published by Apress, is available online. Dive deep into version control with Git." },
+    { "title": "Express.js Documentation", "url": "https://expressjs.com/en/starter/installing.html", "description": "Official Express documentation to help you start building web applications and APIs with Express.js." },
+    { "title": "OWASP Top Ten", "url": "https://owasp.org/www-project-top-ten/", "description": "The OWASP Top Ten is a standard awareness document for developers and web application security. It represents a broad consensus about the most critical security risks to web applications." },
+    { "title": "Interactive Data Visualization for the Web", "url": "https://alignedleft.com/tutorials/d3", "description": "An introductory book on making interactive data visualizations with D3.js. It covers the fundamentals and guides you through creating your first visualizations." },
+    { "title": "AWS Training and Certification", "url": "https://aws.amazon.com/training/", "description": "Explore free digital training and in-depth classroom training, all built by AWS experts." }
+
+  ];
+  res.json(resources);
+});
 
 
 

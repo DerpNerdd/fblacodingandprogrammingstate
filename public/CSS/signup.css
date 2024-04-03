@@ -243,3 +243,23 @@ li:hover{
 #homeButton:hover {
     background-color: #7d5fff; /* Lighter purple on hover for visual feedback */
 }
+
+.signin .content .form .inputBox input[type="button"], /* Update this line */
+.signin .content .form .inputBox input[type="submit"] { /* Ensure this applies to both types */
+    padding: 10px;
+    background: rgb(93, 0, 255); /* This matches your Login button color */
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.35em;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border: none; /* Ensure there's no border unless it's specified in login.css */
+    border-radius: 4px; /* Match this with your login button if it has rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.signin .content .form .inputBox input[type="button"]:hover, /* Update this line */
+.signin .content .form .inputBox input[type="submit"]:hover {
+    background: #7d5fff; /* Lighter purple on hover to match login button if needed */
+    opacity: 0.9; /* Optional: slight opacity change on hover for feedback */
+}
