@@ -19,11 +19,11 @@
 }
 
 .dashboard-content {
+  padding-top: 60px; /* Adjust based on your top navbar height */
   display: flex;
-  justify-content: center; /* Center children horizontally */
-  align-items: center; /* Align children vertically */
-  flex-wrap: wrap; /* Allow items to wrap as needed */
-  gap: 2rem; /* Space between items */
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px); /* Adjust based on your top navbar height */
 }
 
 

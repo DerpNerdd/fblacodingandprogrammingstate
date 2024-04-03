@@ -19,6 +19,8 @@ body, html {
     position: relative; /* Added position relative */
     z-index: 1000; /* High z-index to ensure it's on top */
     justify-content: space-between;
+    width: 100%; /* Ensure it stretches fully across the screen */
+
 }
 
 .company-logo {
@@ -199,11 +201,9 @@ body, html {
 
 /* Dashboard content styling */
 .dashboard-content {
-    margin-left: 300px; /* Updated to match the new sidebar width */
-    padding: 20px;
-    background: #0d1117; /* Dark background for the content area */
-    min-height: 100vh;
-    
+    margin-left: 320px; /* Adjust so the main content does not overlap the sidebar */
+    padding: 20px; /* Padding inside the main content area */
+    min-height: 100vh; /* Minimum height */
 }
 
 .side-navbar {
@@ -307,7 +307,7 @@ body.dark-theme {
 }
 
 body.dark-theme .top-navbar,
-body.dark-theme .dashboard-footer {
+body.dark-theme .dashboard-footer .dashboard-page {
     background: #171717; /* Even darker shade for headers and footers */
 }
 
@@ -322,21 +322,21 @@ body.dark-theme .hamburger-inner::after {
     background-color: #c7c7c7; /* Light bars for visibility */
 }
 
-body.dark-theme .dashboard-content {
+body.dark-theme .dashboard-content .dashboard-page {
     background: #2d2d2d; /* Dark background for content area */
 }
 
 .dashboard-sidebar {
-    bottom: 0; /* Stretch to the bottom edge of the viewport */
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.5); /* Shadow on the right edge */
-    position: fixed; /* Keeps the sidebar in a fixed position */
-    top: 50px; /* Starts below the top-navbar */
+    position: fixed;
+    top: 50px; /* Adjust based on the height of your top navbar */
     left: 0;
-    width: 300px; /* Sidebar width */
-    background: #161b22; /* Dark background color for the sidebar */
-    color: #c9d1d9; /* Light color for text */
-    padding: 20px;
-    z-index: 2; /* Lower z-index than the top-navbar */
+    width: 300px; /* Adjust the width as needed */
+    height: calc(100% - 50px); /* Adjust based on the height of your top navbar */
+    background: #161b22; /* Background color */
+    color: #c9d1d9; /* Text color */
+    overflow-y: auto; /* Enable scrolling if the content is too long */
+    z-index: 5; /* Ensure it's above the page content but below modal dialogs if any */
+    padding: 20px; /* Padding inside the sidebar */
 }
 
 .dashboard-sidebar .new-submission,
