@@ -33,10 +33,27 @@ include information on at least 25 different partners (real or fictional), with 
 - Functionality: Speak to all aspects of the topic
 ## Documentation
 
+### Libraries
+
 - [Node.js Documentation](https://nodejs.org/docs/latest/api/)
 - [MongoDB Documentation](https://www.mongodb.com/docs/)
 - [Tailwind Documentation](https://v2.tailwindcss.com/docs)
 - [FontAwesome Documentation](https://docs.fontawesome.com)
+- [jsDelivr](https://www.jsdelivr.com/documentation)
+- [EJS](https://ejs.co/#docs)
+
+### Copyright Material
+
+  - [FBLA Logo](https://www.fbla.org/)
+  - [VS Code Logo](https://code.visualstudio.com/)
+  - [GMail Logo](https://www.google.com/gmail/about/)
+  - [Stean Logo](https://store.steampowered.com/)
+  - [Microsoft Logo](https://www.microsoft.com/en-us/)
+  - [Github Open Source Code](https://docs.github.com/en/site-policy/github-terms/github-community-code-of-conduct)
+  - [Twitter, Facebook, Instagram, Behance Logos](https://fontawesome.com/icons)
+
+### Templates
+  -[GitHub Home page and General Layout](https://github.com)
 
 ## Deployment
 
