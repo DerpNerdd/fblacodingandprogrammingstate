@@ -53,7 +53,7 @@ include information on at least 25 different partners (real or fictional), with 
   - [Twitter, Facebook, Instagram, Behance Logos](https://fontawesome.com/icons)
 
 ### Templates
-  -[GitHub Home page and General Layout](https://github.com)
+  - [GitHub Home page and General Layout](https://github.com)
 
 ## Deployment
 
