@@ -86,7 +86,7 @@ console.log(path.join(__dirname, 'public/uploads'));
 
 
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://DerpNerd:KingAlanSanchez2007@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv:/REDACTED@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority")
 .then(() => {
   console.log('MongoDB connected');
   Partner.init().then(() => {
@@ -157,7 +157,7 @@ userSchema.pre('save', async function(next) {
 app.use(express.static(path.join(__dirname, 'public')));
 
 const sessionStore = MongoStore.create({
-  mongoUrl: 'mongodb+srv://DerpNerd:KingAlanSanchez2007@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority',
+  mongoUrl: 'mongodb+srv://REDACTED@globaldatabase.imwknpl.mongodb.net/?retryWrites=true&w=majority',
   collectionName: 'sessions'
 });
 
